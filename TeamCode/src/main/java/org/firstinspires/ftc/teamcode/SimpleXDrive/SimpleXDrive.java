@@ -23,7 +23,7 @@ public class SimpleXDrive extends CommandOpMode {
     @Override
     public void initialize() {
         driveSubsystem = new DriveSubsystem(hardwareMap);
-        odometrySubsystem = new CustomOdometrySubsystem(hardwareMap, telemetry);
+        odometrySubsystem = new CustomOdometrySubsystem(hardwareMap);
 
         setSpeedCommand = new SetDriveSpeedCommand(driveSubsystem, gamepad1, odometrySubsystem);
 

@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
+import com.arcrobotics.ftclib.geometry.Pose2d;
+import com.arcrobotics.ftclib.geometry.Rotation2d;
+
 public class Vector {
     public double x, y, z, h;
 
@@ -21,5 +24,9 @@ public class Vector {
         double xComponent = ((vector.x * Math.cos(angle)) + (vector.y * Math.sin(angle)));
 
         return new Vector(xComponent, yComponent);
+    }
+
+    public Pose2d toPose2d() {
+        return new Pose2d(this.x, this.y, new Rotation2d(this.h));
     }
 }

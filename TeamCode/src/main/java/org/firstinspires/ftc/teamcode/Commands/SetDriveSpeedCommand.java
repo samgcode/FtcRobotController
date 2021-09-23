@@ -18,6 +18,7 @@ public class SetDriveSpeedCommand extends CommandBase {
         gamepad = gamepad_;
         odometrySubsystem = odometrySubsystem_;
         addRequirements(driveSubsystem);
+        addRequirements(odometrySubsystem_);
     }
 
     @Override
