@@ -8,7 +8,7 @@ import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class SubsystemService {
-    public static OdometrySubsystem createOdometrySubsystem(HardwareMap hardwareMap, String leftEncoderName, String rightEncoderName, String centerEncoderName) {
+    public static OdometrySubsystem createOdometrySubsystem(HardwareMap hardwareMap, String leftEncoderName, String rightEncoderName, String centerEncoderName, Vector initialPosition) {
         double TRACK_WIDTH = 10.4;
         double TICKS_TO_INCHES = (Math.PI*3.54331)/1120;
         double CENTER_WHEEL_OFFSET = 5.5;
@@ -23,6 +23,9 @@ public class SubsystemService {
                 () -> centerEncoder.getCurrentPosition() * TICKS_TO_INCHES,
                 TRACK_WIDTH, CENTER_WHEEL_OFFSET
         );
+
+        holonomicOdometry.updatePose(initialPosition.toPose2d());
+
         return new OdometrySubsystem(holonomicOdometry);
     }
 

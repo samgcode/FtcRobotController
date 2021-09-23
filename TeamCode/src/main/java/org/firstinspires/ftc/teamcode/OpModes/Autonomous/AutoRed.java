@@ -4,9 +4,9 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous
-public class AutoBlue extends CommandOpMode {
+public class AutoRed extends CommandOpMode {
     @Override
     public void initialize() {
-        schedule(new Auto(false, hardwareMap));
+        schedule(new Auto(true, hardwareMap));
     }
 }
