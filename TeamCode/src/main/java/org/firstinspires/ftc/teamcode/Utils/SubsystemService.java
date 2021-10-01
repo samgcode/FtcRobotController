@@ -9,13 +9,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class SubsystemService {
     public static OdometrySubsystem createOdometrySubsystem(HardwareMap hardwareMap, String leftEncoderName, String rightEncoderName, String centerEncoderName, Vector initialPosition) {
-        double TRACK_WIDTH = 10.4;
-        double TICKS_TO_INCHES = (Math.PI*3.54331)/1120;
-        double CENTER_WHEEL_OFFSET = 5.5;
+        double TRACK_WIDTH = 10.49;
+//        double TICKS_TO_INCHES = (Math.PI*3.54331)/1120;
+        double WHEEL_DIAMETER = 3.54331;
+        double CENTER_WHEEL_OFFSET = 0;
 
         MotorEx leftEncoder = new MotorEx(hardwareMap, leftEncoderName);
         MotorEx rightEncoder = new MotorEx(hardwareMap, rightEncoderName);
         MotorEx centerEncoder = new MotorEx(hardwareMap, centerEncoderName);
+
+        double TICKS_TO_INCHES = WHEEL_DIAMETER * Math.PI / leftEncoder.getCPR();
 
         HolonomicOdometry holonomicOdometry = new HolonomicOdometry(
                 () -> leftEncoder.getCurrentPosition() * TICKS_TO_INCHES,

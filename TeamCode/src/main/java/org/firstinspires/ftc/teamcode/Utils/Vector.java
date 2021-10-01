@@ -27,6 +27,6 @@ public class Vector {
     }
 
     public Pose2d toPose2d() {
-        return new Pose2d(this.x, this.y, new Rotation2d(this.h));
+        return new Pose2d(this.x, this.y, new Rotation2d((this.h*(Math.PI/180))));
     }
 }

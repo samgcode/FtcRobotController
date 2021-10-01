@@ -5,14 +5,12 @@ import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.command.PurePursuitCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
-import com.arcrobotics.ftclib.geometry.Pose2d;
-import com.arcrobotics.ftclib.purepursuit.Waypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.EndWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.GeneralWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.StartWaypoint;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Subsystems.CustomOdometrySubsystem;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemService;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
@@ -26,7 +24,7 @@ public class Auto extends CommandBase {
     Vector origin, homeA, homeB, hub, carousel, barrier, startingLocation;
     int m = 1;
 
-    public Auto(boolean isRed, HardwareMap hardwareMap) {
+    public Auto(boolean isRed, HardwareMap hardwareMap, Telemetry telemetry) {
         if(!isRed) {
             m = -1;
         }
@@ -52,7 +50,7 @@ public class Auto extends CommandBase {
                 new SequentialCommandGroup(//score freight
                         new PurePursuitCommand(driveSubsystem, odometrySubsystem,
                                 new StartWaypoint(startingLocation.toPose2d()),
-                                new GeneralWaypoint(hub.toPose2d(), 0, 0, 0)
+                                new EndWaypoint(hub.toPose2d(), 0, 0, 0, 1, 0.05)
                         ),
                         new SequentialCommandGroup(//place on correct level
                                 //lift arm to level(pass in vision)
@@ -62,14 +60,14 @@ public class Auto extends CommandBase {
                 new SequentialCommandGroup(//score carousel
                         new PurePursuitCommand(driveSubsystem, odometrySubsystem,
                                 new StartWaypoint(hub.toPose2d()),
-                                new GeneralWaypoint(carousel.toPose2d(), 0, 0, 0)
+                                new EndWaypoint(carousel.toPose2d(), 0, 0, 0, 1, 0.05)
                         )
                         //turn carousel
                 ),
                 new SequentialCommandGroup(//park in warehouse
                         new PurePursuitCommand(driveSubsystem, odometrySubsystem,
                                 new StartWaypoint(carousel.toPose2d()),
-                                new GeneralWaypoint(barrier.toPose2d(), 0, 0, 0)
+                                new EndWaypoint(barrier.toPose2d(), 0, 0, 0, 1, 0.05)
                         )
                         //drive straight for 5 sec
                 )

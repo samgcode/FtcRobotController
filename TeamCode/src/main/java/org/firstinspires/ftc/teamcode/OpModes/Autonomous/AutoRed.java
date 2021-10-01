@@ -7,6 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AutoRed extends CommandOpMode {
     @Override
     public void initialize() {
-        schedule(new Auto(true, hardwareMap));
+        schedule(new Auto(true, hardwareMap, telemetry));
     }
 }
