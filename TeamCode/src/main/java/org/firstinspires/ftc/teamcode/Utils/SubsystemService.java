@@ -9,21 +9,23 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class SubsystemService {
     public static OdometrySubsystem createOdometrySubsystem(HardwareMap hardwareMap, String leftEncoderName, String rightEncoderName, String centerEncoderName, Vector initialPosition) {
-        double TRACK_WIDTH = 10.49;
-//        double TICKS_TO_INCHES = (Math.PI*3.54331)/1120;
-        double WHEEL_DIAMETER = 3.54331;
-        double CENTER_WHEEL_OFFSET = 0;
+        double TRACK_WIDTH = 11.6715657;//13.7272565099261
+        double WHEEL_DIAMETER = 1.366;
+        double CENTER_WHEEL_OFFSET = -5;//-6.79087916353029
+        double TICKS_PER_REV = 8192;//2048
+        double TICKS_TO_INCHES = WHEEL_DIAMETER * Math.PI / TICKS_PER_REV;
+
 
         MotorEx leftEncoder = new MotorEx(hardwareMap, leftEncoderName);
         MotorEx rightEncoder = new MotorEx(hardwareMap, rightEncoderName);
         MotorEx centerEncoder = new MotorEx(hardwareMap, centerEncoderName);
 
-        double TICKS_TO_INCHES = WHEEL_DIAMETER * Math.PI / leftEncoder.getCPR();
+//        rightEncoder.setInverted(false);
 
         HolonomicOdometry holonomicOdometry = new HolonomicOdometry(
-                () -> leftEncoder.getCurrentPosition() * TICKS_TO_INCHES,
+                () -> leftEncoder.getCurrentPosition() * -TICKS_TO_INCHES,
                 () -> rightEncoder.getCurrentPosition() * TICKS_TO_INCHES,
-                () -> centerEncoder.getCurrentPosition() * TICKS_TO_INCHES,
+                () -> centerEncoder.getCurrentPosition() * -TICKS_TO_INCHES,
                 TRACK_WIDTH, CENTER_WHEEL_OFFSET
         );
 
@@ -38,7 +40,10 @@ public class SubsystemService {
         frontLeft = new Motor(hardwareMap, frontLeftName);
         backRight = new Motor(hardwareMap, backRightName);
         backLeft = new Motor(hardwareMap, backLeftName);
-
+//        frontLeft.setInverted(true);
+//        frontRight.setInverted(true);
+//        backLeft.setInverted(true);
+//        backRight.setInverted(true);
         return new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
     }
 }

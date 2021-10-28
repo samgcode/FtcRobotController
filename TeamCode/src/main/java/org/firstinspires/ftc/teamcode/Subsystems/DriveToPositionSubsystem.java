@@ -5,7 +5,8 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class DriveToPositionSubsystem extends SubsystemBase {
+public class
+DriveToPositionSubsystem extends SubsystemBase {
     MotorEx motor;
     PIDController pidController;
 

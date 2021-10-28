@@ -19,7 +19,7 @@ public class CustomOdometrySubsystem extends SubsystemBase {
 
     static double TRACK_WIDTH = 10.4;
     static double TICKS_TO_INCHES = (Math.PI*3.54331)/1120;
-    static double CENTER_WHEEL_OFFSET = 5.5;
+    static double CENTER_WHEEL_OFFSET = -5.5;
 
     Vector position;
 
@@ -30,10 +30,11 @@ public class CustomOdometrySubsystem extends SubsystemBase {
         encoderRight = new MotorEx(hardwareMap, "motor3");
         encoderPerp = new MotorEx(hardwareMap, "motor0");
 
+
         holOdom = new HolonomicOdometry(
-                () -> encoderLeft.getCurrentPosition() * TICKS_TO_INCHES,
+                () -> encoderLeft.getCurrentPosition() * -TICKS_TO_INCHES,
                 () -> encoderRight.getCurrentPosition() * TICKS_TO_INCHES,
-                () -> encoderPerp.getCurrentPosition() * TICKS_TO_INCHES,
+                () -> encoderPerp.getCurrentPosition() * -TICKS_TO_INCHES,
                 TRACK_WIDTH, CENTER_WHEEL_OFFSET
         );
 
