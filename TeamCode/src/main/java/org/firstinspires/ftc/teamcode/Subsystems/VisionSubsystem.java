@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
+import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -14,11 +16,17 @@ import org.firstinspires.ftc.teamcode.Utils.Vector;
 public class VisionSubsystem extends SubsystemBase {
     OpenCvCamera camera;
     BarcodePipeline barcodePipeline;
+    Logger logger;
     public int level;
     public boolean stable = false;
 
-    public VisionSubsystem(HardwareMap hardwareMap) {
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
+    public VisionSubsystem(Logger logger_, HardwareMap hardwareMap) {
+        logger = logger_;
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+
         barcodePipeline = new BarcodePipeline();
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -36,6 +44,10 @@ public class VisionSubsystem extends SubsystemBase {
                 System.out.println(errorCode);
             }
         });
+
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        dashboard.startCameraStream(camera, 0);
+
     }
 
 
@@ -55,16 +67,20 @@ public class VisionSubsystem extends SubsystemBase {
 //            System.out.println("Pipeline time ms: " + camera.getPipelineTimeMs());
 //            System.out.println("Overhead time ms: " + camera.getOverheadTimeMs());
 //            System.out.println("Theoretical max FPS: " + camera.getCurrentPipelineMaxFps());
-//            System.out.println("index: " + 0 + ", hue: " + String.format("%.3g", left.x) + ", saturation: " + String.format("%.3g", left.y));
-//            System.out.println("index: " + 1 + ", hue: " + String.format("%.3g", middle.x) + ", saturation: " + String.format("%.3g", middle.y));
-//            System.out.println("index: " + 2 + ", hue: " + String.format("%.3g", right.x) + ", saturation: " + String.format("%.3g", right.y));
-            System.out.println("Position: " + level);
-            System.out.println(counter);
+        logHS(0, left);
+        logHS(1, middle);
+        logHS(2, right);
+        logger.log("Detected position", level);
 //        }
         counter++;
         if(counter >= 30000) {
             stable = true;
         }
+    }
+
+    void logHS(int index, Vector values) {
+        logger.log("hue " + index, String.format("%.3g", values.x));
+        logger.log("saturation " + index, String.format("%.3g", values.y));
     }
 
     int getMostGreen(Vector[] values, double min, double max) {

@@ -34,16 +34,19 @@ public class SubsystemService {
         return new OdometrySubsystem(holonomicOdometry);
     }
 
-    public static MecanumDrive createMechanumDriveSubsystem(HardwareMap hardwareMap, String frontRightName, String frontLeftName, String backLeftName,String backRightName) {
-        Motor frontRight, frontLeft, backLeft, backRight;
-        frontRight = new Motor(hardwareMap, frontRightName);
-        frontLeft = new Motor(hardwareMap, frontLeftName);
-        backRight = new Motor(hardwareMap, backRightName);
-        backLeft = new Motor(hardwareMap, backLeftName);
-//        frontLeft.setInverted(true);
-//        frontRight.setInverted(true);
-//        backLeft.setInverted(true);
-//        backRight.setInverted(true);
+    public static MecanumDrive createMechanumDriveSubsystem(Logger logger, HardwareMap hardwareMap, String frontRightName, String frontLeftName, String backLeftName,String backRightName) {
+        FeedForwardMotor frontRight, frontLeft, backLeft, backRight;
+        frontRight = new FeedForwardMotor(hardwareMap, frontRightName);
+        frontLeft = new FeedForwardMotor(hardwareMap, frontLeftName);
+        backRight = new FeedForwardMotor(hardwareMap, backRightName);
+        backLeft = new FeedForwardMotor(hardwareMap, backLeftName);
+
+        new FeedForwardTuner(logger, frontRight, frontLeft, backRight, backLeft);
+
+        return new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
+    }
+
+    public static MecanumDrive createMechanumDriveSubsystem(FeedForwardMotor frontRight, FeedForwardMotor frontLeft, FeedForwardMotor backRight, FeedForwardMotor backLeft) {
         return new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
     }
 }

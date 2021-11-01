@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
+import com.acmerobotics.dashboard.config.Config;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -7,6 +9,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+@Config
 public class BarcodePipeline extends OpenCvPipeline {
 
     Mat matYCrCb = new Mat();
@@ -18,11 +21,11 @@ public class BarcodePipeline extends OpenCvPipeline {
     public Vector middle = new Vector(0, 0);
     public Vector right = new Vector(0, 0);
 
-    int center = 600;
-    int vPos = 200;
-    int spacing = 500;
-    int height = 50;
-    int width = 100;
+    public static int center = 600;
+    public static int height = 50;
+    public static int spacing = 500;
+    public static int vPos = 120;
+    public static int width = 50;
 
     int[] leftRect = {
             (center-spacing)-width, vPos-height,
@@ -36,6 +39,16 @@ public class BarcodePipeline extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
+        leftRect = new int[]{
+                (center-spacing)-width, vPos-height,
+                (center-spacing)+width, vPos+height};
+        middleRect = new int[]{
+                center-width, vPos-height,
+                center+width, vPos+height};
+        rightRect = new int[]{
+                (center+spacing)-width, vPos-height,
+                (center+spacing)+width, vPos+height};
+
         Imgproc.cvtColor(input, matYCrCb, Imgproc.COLOR_RGB2HSV);
 
         leftBlock = drawRectangle(matYCrCb, leftRect, new Scalar(0, 0, 0), 5);

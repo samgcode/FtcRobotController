@@ -1,13 +1,19 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
+@Config
 public class DriveToPositionCommand extends CommandBase {
     MecanumDrive driveSubsystem;
     OdometrySubsystem odometrySubsystem;
@@ -15,8 +21,18 @@ public class DriveToPositionCommand extends CommandBase {
     double acceptableErrorXY;
     double acceptableErrorH;
     boolean isFinished = false;
+    Logger logger;
 
-    public DriveToPositionCommand(MecanumDrive driveSubsystem_, OdometrySubsystem odometrySubsystem_, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
+    PIDController xPID;
+    PIDController yPID;
+    PIDController hPID;
+
+    public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.1, 0, 0);
+    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.1, 0, 0);
+    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.02, 1, 0);
+
+    public DriveToPositionCommand(Logger logger_, MecanumDrive driveSubsystem_, OdometrySubsystem odometrySubsystem_, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
+        logger = logger_;
         driveSubsystem = driveSubsystem_;
         odometrySubsystem = odometrySubsystem_;
         targetPosition = position_;
@@ -24,6 +40,10 @@ public class DriveToPositionCommand extends CommandBase {
         acceptableErrorH = acceptableErrorH_;
 
         addRequirements(odometrySubsystem);
+
+        xPID = new PIDController(0,0,0);
+        yPID = new PIDController(0,0,0);
+        hPID = new PIDController(0,0,0);
     }
 
     @Override
@@ -38,9 +58,9 @@ public class DriveToPositionCommand extends CommandBase {
         Vector currentPose = new Vector(odometrySubsystem.getPose());
         double measuredAngle = getMAngle(currentPose.h, targetPosition.h);
 
-        PIDController xPID = new PIDController(0.1, 0, 0);
-        PIDController yPID = new PIDController(0.1, 0, 0);
-        PIDController hPID = new PIDController(0.025, 1, 0.15);
+        xPID.setPID(xPidCoefficients.p, xPidCoefficients.i, xPidCoefficients.d);
+        yPID.setPID(yPidCoefficients.p, yPidCoefficients.i, yPidCoefficients.d);
+        hPID.setPID(hPidCoefficients.p, hPidCoefficients.i, hPidCoefficients.d);
 
         xPID.setTolerance(acceptableErrorXY);
         yPID.setTolerance(acceptableErrorXY);
@@ -66,8 +86,6 @@ public class DriveToPositionCommand extends CommandBase {
             isFinished = true;
             speed = new Vector(0,0,0);
         }
-        System.out.println(speed.h);
-//        speed = new Vector(0,0,0);
 
         driveSubsystem.driveFieldCentric(-speed.y, speed.x, speed.h, currentPose.h);
     }

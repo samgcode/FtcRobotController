@@ -56,7 +56,7 @@ public class Auto extends CommandBase {
 
         new SequentialCommandGroup(
                 new SequentialCommandGroup(//score freight
-                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, hub, acceptableErrorXY, acceptableErrorH),
+//                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, hub, acceptableErrorXY, acceptableErrorH),
                         new SequentialCommandGroup(//place on correct level
 //                                new SetElevatorPositionVisionCommand(visionSubsystem, elevatorSubsystem, 1),
 //                                new SetMotorPositionCommand(linearSubsystem, 10, 1)
@@ -64,11 +64,11 @@ public class Auto extends CommandBase {
                         )
                 ),
                 new SequentialCommandGroup(//score carousel
-                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, carousel, acceptableErrorXY, acceptableErrorH)
+//                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, carousel, acceptableErrorXY, acceptableErrorH)
                         //turn carousel
                 ),
                 new SequentialCommandGroup(//park in warehouse
-                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, barrier, acceptableErrorXY, acceptableErrorH)
+//                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, barrier, acceptableErrorXY, acceptableErrorH)
                         //drive straight for 5 sec
                 )
         );
