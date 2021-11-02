@@ -33,7 +33,7 @@ public class MechanumDriveOp extends CommandOpMode {
                 "drive2", "drive3", "drive0", new Vector(0, 0, 0));
         new LogPosition(ftcLibOdometry, logger);
 
-        setMechanumSpeedCommand = new SetMechanumSpeedCommand(driveSubsystem, ftcLibOdometry, gamepad1);
+        setMechanumSpeedCommand = new SetMechanumSpeedCommand(logger, driveSubsystem, ftcLibOdometry, gamepad1);
 
         schedule(setMechanumSpeedCommand);
     }

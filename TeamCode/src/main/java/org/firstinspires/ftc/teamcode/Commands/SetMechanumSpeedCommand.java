@@ -1,33 +1,89 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
+import com.arcrobotics.ftclib.command.button.GamepadButton;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Utils.Angle;
+import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
+@Config
 public class SetMechanumSpeedCommand extends CommandBase {
     MecanumDrive driveSubsystem;
     OdometrySubsystem odometrySubsystem;
-    Gamepad gamepad;
+    GamepadEx gamepad;
+    PIDController hPID;
+    Logger logger;
+    double targetAngle;
+    boolean updateTargetAngle;
+    double speedModifier = 1.0;
 
-    public SetMechanumSpeedCommand(MecanumDrive driveSubsystem_, OdometrySubsystem odometrySubsystem_, Gamepad gamepad_) {
+    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.04,1,0.015);
+    public static double fastSpeed = 1;
+    public static double slowSpeed = 0.5;
+
+    public SetMechanumSpeedCommand(Logger logger_, MecanumDrive driveSubsystem_, OdometrySubsystem odometrySubsystem_, Gamepad gamepad_) {
         driveSubsystem = driveSubsystem_;
         odometrySubsystem = odometrySubsystem_;
-        gamepad = gamepad_;
+        gamepad = new GamepadEx(gamepad_);
+        logger = logger_;
+
+        hPID = new PIDController(0,0,0);
 
         addRequirements(odometrySubsystem);
     }
 
+    boolean prevState = false;
+
     @Override
     public void execute() {
-        double speedModifier = 1;
-        double h = odometrySubsystem.getPose().getHeading();
+        double hSpeedModifier = 0.5;
+        Vector pos = new Vector(odometrySubsystem.getPose());
+        double h = pos.h;
 
-        Vector speed = new Vector(-gamepad.left_stick_x*speedModifier, -gamepad.left_stick_y*speedModifier, gamepad.right_stick_x*speedModifier);
+        logger.log("target angle", targetAngle);
 
-       driveSubsystem.driveFieldCentric(speed.x, speed.y, speed.h, h*(180/Math.PI), true);
+        double measuredAngle = Angle.getMAngle(h, targetAngle);
+
+        hPID.setPID(hPidCoefficients.p, hPidCoefficients.i, hPidCoefficients.d);
+        hPID.setTolerance(1);
+        hPID.setSetPoint(targetAngle);
+
+        double hSpeed = hPID.calculate(measuredAngle);
+        Range.clip(hSpeed, -hSpeedModifier, hSpeedModifier);
+
+        boolean state = gamepad.isDown(GamepadKeys.Button.LEFT_STICK_BUTTON);
+        if(prevState != state) {
+            if(state) {
+                speedModifier = speedModifier == slowSpeed ? fastSpeed : slowSpeed;
+            }
+            prevState = state;
+        }
+
+        if(gamepad.getRightX() > 0.2 || gamepad.getRightX() < -0.2) {
+            hSpeed = gamepad.getRightX()*speedModifier;
+            updateTargetAngle = true;
+            logger.log("status", "rotating");
+        } else {
+            if(updateTargetAngle) {
+                targetAngle = h;
+                updateTargetAngle = false;
+            }
+            logger.log("status", "pid");
+        }
+
+        Vector speed = new Vector(-gamepad.getLeftX()*speedModifier, gamepad.getLeftY()*speedModifier, hSpeed);
+
+       driveSubsystem.driveFieldCentric(speed.x, speed.y, speed.h, h, true);
         //driveSubsystem.driveRobotCentric(speed.x, speed.y, speed.h, true);
     }
 }

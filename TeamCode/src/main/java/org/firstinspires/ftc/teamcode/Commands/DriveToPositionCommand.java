@@ -5,11 +5,10 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Utils.Angle;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
@@ -56,7 +55,7 @@ public class DriveToPositionCommand extends CommandBase {
         double speedModifier = 0.5;
 
         Vector currentPose = new Vector(odometrySubsystem.getPose());
-        double measuredAngle = getMAngle(currentPose.h, targetPosition.h);
+        double measuredAngle = Angle.getMAngle(currentPose.h, targetPosition.h);
 
         xPID.setPID(xPidCoefficients.p, xPidCoefficients.i, xPidCoefficients.d);
         yPID.setPID(yPidCoefficients.p, yPidCoefficients.i, yPidCoefficients.d);
@@ -88,19 +87,6 @@ public class DriveToPositionCommand extends CommandBase {
         }
 
         driveSubsystem.driveFieldCentric(-speed.y, speed.x, speed.h, currentPose.h);
-    }
-
-    double getMAngle(double mAngle, double targetAngle) {
-        double difference = targetAngle-mAngle;
-
-        if(difference < -180) {
-            difference = 360+difference;
-        } else if(difference > 180) {
-            difference = 360-difference;
-            difference *= -1;
-        }
-
-        return targetAngle - difference;
     }
 
     @Override

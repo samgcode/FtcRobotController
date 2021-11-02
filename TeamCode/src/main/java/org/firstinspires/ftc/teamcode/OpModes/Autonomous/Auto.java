@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModes.Autonomous;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.command.PurePursuitCommand;
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Commands.SetElevatorPositionVisionCommand;
 import org.firstinspires.ftc.teamcode.Commands.SetMotorPositionCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveToPositionSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
+import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemService;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
@@ -25,6 +27,8 @@ public class Auto extends CommandBase {
     VisionSubsystem visionSubsystem;
     DriveToPositionSubsystem elevatorSubsystem;
     DriveToPositionSubsystem linearSubsystem;
+    FtcDashboard dashboard;
+    Logger logger;
 
     double t = 23.75;//1 tile in inches
     Vector origin, homeA, homeB, hub, carousel, barrier, startingLocation;
@@ -46,7 +50,10 @@ public class Auto extends CommandBase {
         barrier = new Vector(2*t*m, 0.5*t, 90*m);
         startingLocation = new Vector(3*t*m, -0.5*t, 0);
 
-        driveSubsystem = SubsystemService.createMechanumDriveSubsystem(hardwareMap,
+        dashboard = FtcDashboard.getInstance();
+        logger = new Logger(dashboard);
+
+        driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,
                 "drive3", "drive1", "drive2", "drive0");
         odometrySubsystem = SubsystemService.createOdometrySubsystem(hardwareMap,
                 "drive2", "drive3", "drive0", startingLocation);
@@ -56,7 +63,7 @@ public class Auto extends CommandBase {
 
         new SequentialCommandGroup(
                 new SequentialCommandGroup(//score freight
-//                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, hub, acceptableErrorXY, acceptableErrorH),
+                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, hub, acceptableErrorXY, acceptableErrorH),
                         new SequentialCommandGroup(//place on correct level
 //                                new SetElevatorPositionVisionCommand(visionSubsystem, elevatorSubsystem, 1),
 //                                new SetMotorPositionCommand(linearSubsystem, 10, 1)
@@ -64,11 +71,11 @@ public class Auto extends CommandBase {
                         )
                 ),
                 new SequentialCommandGroup(//score carousel
-//                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, carousel, acceptableErrorXY, acceptableErrorH)
+                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, carousel, acceptableErrorXY, acceptableErrorH)
                         //turn carousel
                 ),
                 new SequentialCommandGroup(//park in warehouse
-//                        new DriveToPositionCommand(driveSubsystem, odometrySubsystem, barrier, acceptableErrorXY, acceptableErrorH)
+                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, barrier, acceptableErrorXY, acceptableErrorH)
                         //drive straight for 5 sec
                 )
         );
