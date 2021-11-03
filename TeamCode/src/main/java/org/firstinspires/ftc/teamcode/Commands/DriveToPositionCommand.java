@@ -26,9 +26,9 @@ public class DriveToPositionCommand extends CommandBase {
     PIDController yPID;
     PIDController hPID;
 
-    public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.1, 0, 0);
-    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.1, 0, 0);
-    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.02, 1, 0);
+    public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.2, 0, 0);
+    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.2, 0, 0);
+    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.03, 1, 0.01);
 
     public DriveToPositionCommand(Logger logger_, MecanumDrive driveSubsystem_, OdometrySubsystem odometrySubsystem_, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
         logger = logger_;

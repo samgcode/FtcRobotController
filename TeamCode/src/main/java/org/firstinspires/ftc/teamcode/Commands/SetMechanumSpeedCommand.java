@@ -61,7 +61,7 @@ public class SetMechanumSpeedCommand extends CommandBase {
         double hSpeed = hPID.calculate(measuredAngle);
         Range.clip(hSpeed, -hSpeedModifier, hSpeedModifier);
 
-        boolean state = gamepad.isDown(GamepadKeys.Button.LEFT_STICK_BUTTON);
+        boolean state = gamepad.isDown(GamepadKeys.Button.A);
         if(prevState != state) {
             if(state) {
                 speedModifier = speedModifier == slowSpeed ? fastSpeed : slowSpeed;
