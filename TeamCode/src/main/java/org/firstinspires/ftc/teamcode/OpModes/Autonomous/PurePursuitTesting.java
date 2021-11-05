@@ -59,14 +59,14 @@ public class PurePursuitTesting extends CommandOpMode {
         Vector pointC = new Vector(0, 15, -180);
         Vector pointD = new Vector(10, 10, 180);
 
-        SequentialCommandGroup movementCommand = new SequentialCommandGroup(
-                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, origin, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, pointA, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, pointB, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, pointC, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, pointD, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, origin, acceptableErrorXY, acceptableErrorH)
-        );
+//        SequentialCommandGroup movementCommand = new SequentialCommandGroup(
+//                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, origin, acceptableErrorXY, acceptableErrorH),
+//                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, pointA, acceptableErrorXY, acceptableErrorH),
+//                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, pointB, acceptableErrorXY, acceptableErrorH),
+//                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, pointC, acceptableErrorXY, acceptableErrorH),
+//                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, pointD, acceptableErrorXY, acceptableErrorH),
+//                new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, origin, acceptableErrorXY, acceptableErrorH)
+//        );
 
 //        schedule(movementCommand);
 
@@ -89,15 +89,15 @@ public class PurePursuitTesting extends CommandOpMode {
         Button y2 = new GamepadButton(gamepadEx2, GamepadKeys.Button.Y);
         Button x2 = new GamepadButton(gamepadEx2, GamepadKeys.Button.X);
 
-        a.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 0), acceptableErrorXY, acceptableErrorH));
-        b.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(10, 10, 0), acceptableErrorXY, acceptableErrorH));
-        y.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(20, 0, 0), acceptableErrorXY, acceptableErrorH));
-        x.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(10, -10, 0), acceptableErrorXY, acceptableErrorH));
-
-        a2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 0), acceptableErrorXY, acceptableErrorH));
-        b2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 90), acceptableErrorXY, acceptableErrorH));
-        y2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 180), acceptableErrorXY, acceptableErrorH));
-        x2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, -90), acceptableErrorXY, acceptableErrorH));
+//        a.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 0), acceptableErrorXY, acceptableErrorH));
+//        b.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(10, 10, 0), acceptableErrorXY, acceptableErrorH));
+//        y.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(20, 0, 0), acceptableErrorXY, acceptableErrorH));
+//        x.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(10, -10, 0), acceptableErrorXY, acceptableErrorH));
+//
+//        a2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 0), acceptableErrorXY, acceptableErrorH));
+//        b2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 90), acceptableErrorXY, acceptableErrorH));
+//        y2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 180), acceptableErrorXY, acceptableErrorH));
+//        x2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, -90), acceptableErrorXY, acceptableErrorH));
     }
 
 }
