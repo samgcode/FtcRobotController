@@ -21,10 +21,10 @@ public class BarcodePipeline extends OpenCvPipeline {
     public Vector middle = new Vector(0, 0);
     public Vector right = new Vector(0, 0);
 
-    public static int center = 600;
+    public static int center = 580;
     public static int height = 50;
     public static int spacing = 500;
-    public static int vPos = 120;
+    public static int vPos = 220;
     public static int width = 50;
 
     int[] leftRect = {

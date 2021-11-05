@@ -2,9 +2,9 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -17,6 +17,7 @@ public class VisionSubsystem extends SubsystemBase {
     OpenCvCamera camera;
     BarcodePipeline barcodePipeline;
     Logger logger;
+    Timing.Timer timer;
     public int level;
     public boolean stable = false;
 
@@ -48,34 +49,24 @@ public class VisionSubsystem extends SubsystemBase {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         dashboard.startCameraStream(camera, 0);
 
+        timer = new Timing.Timer(2);
+        timer.start();
+
     }
 
+    public void updateVision() {
+        if(!timer.done()) {
+            Vector left = barcodePipeline.left;
+            Vector middle = barcodePipeline.middle;
+            Vector right = barcodePipeline.right;
 
-    int counter = 0;
-    @Override
-    public void periodic() {
-        Vector left = barcodePipeline.left;
-        Vector middle = barcodePipeline.middle;
-        Vector right = barcodePipeline.right;
+            level = getMostGreen(new Vector[]{left, middle, right}, 20, 50);
 
-        level = getMostGreen(new Vector[]{left, middle, right}, 20, 50);
-
-//        if(counter % 20000 == 0) {
-//            System.out.println("Frame Count: " + camera.getFrameCount());
-//            System.out.println("FPS: " + String.format("%.2f", camera.getFps()));
-//            System.out.println("Total frame time ms: " + camera.getTotalFrameTimeMs());
-//            System.out.println("Pipeline time ms: " + camera.getPipelineTimeMs());
-//            System.out.println("Overhead time ms: " + camera.getOverheadTimeMs());
-//            System.out.println("Theoretical max FPS: " + camera.getCurrentPipelineMaxFps());
-        logHS(0, left);
-        logHS(1, middle);
-        logHS(2, right);
-        logger.log("Detected position", level);
-//        }
-        counter++;
-        if(counter >= 30000) {
-            stable = true;
+            logHS(0, left);
+            logHS(1, middle);
+            logHS(2, right);
         }
+        logger.log("Detected position", level);
     }
 
     void logHS(int index, Vector values) {

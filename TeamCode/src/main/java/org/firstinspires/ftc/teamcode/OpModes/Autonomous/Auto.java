@@ -7,10 +7,15 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Commands.DriveToPositionCommand;
+import org.firstinspires.ftc.teamcode.Commands.FindLevelCommand;
+import org.firstinspires.ftc.teamcode.Commands.SetElevatorPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.SetElevatorPositionVisionCommand;
 import org.firstinspires.ftc.teamcode.Commands.SetMotorPositionCommand;
+import org.firstinspires.ftc.teamcode.Commands.WaitForSecondsCommand;
+import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveToPositionSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
@@ -22,10 +27,9 @@ public class Auto extends SequentialCommandGroup {
     MecanumDrive driveSubsystem;
     OdometrySubsystem odometrySubsystem;
     VisionSubsystem visionSubsystem;
-    DriveToPositionSubsystem elevatorSubsystem;
-    DriveToPositionSubsystem linearSubsystem;
     FtcDashboard dashboard;
     Logger logger;
+    ContinuousServoSubsystem elevatorSubsystem;
 
     double t = 23.75;//1 tile in inches
     Vector origin, homeA, homeB, hub, carousel, barrier, startingLocation, inWarehouse;
@@ -55,38 +59,44 @@ public class Auto extends SequentialCommandGroup {
                 "drive3", "drive1", "drive2", "drive0");
         odometrySubsystem = SubsystemService.createOdometrySubsystem(hardwareMap,
                 "drive2", "drive3", "drive0", startingLocation);
+        visionSubsystem = new VisionSubsystem(logger, hardwareMap);
+        elevatorSubsystem = new ContinuousServoSubsystem(logger, hardwareMap, "servo0", "limit0", "limit4");
 
 //        elevatorSubsystem = new DriveToPositionSubsystem(hardwareMap, "elevator", 0, 0,
 
         new LogPosition(odometrySubsystem, logger);
 
-        SequentialCommandGroup autoCommand = new SequentialCommandGroup(
-                new SequentialCommandGroup(//score freight
-                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, hub, acceptableErrorXY, acceptableErrorH),
-                        new SequentialCommandGroup(//place on correct level
+//        SequentialCommandGroup autoCommand = new SequentialCommandGroup(
+//                new SequentialCommandGroup(//score freight
+//                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, hub, acceptableErrorXY, acceptableErrorH),
+//                        new SequentialCommandGroup(//place on correct level
 //                                new SetElevatorPositionVisionCommand(visionSubsystem, elevatorSubsystem, 1),
 //                                new SetMotorPositionCommand(linearSubsystem, 10, 1)
-                                //deposit freight
-                        )
-                ),
-                new SequentialCommandGroup(//score carousel
-                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, carousel, acceptableErrorXY, acceptableErrorH)
-                        //turn carousel
-                ),
-                new SequentialCommandGroup(//park in warehouse
-                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, barrier, acceptableErrorXY, acceptableErrorH)
-                        //drive straight for 5 sec
-                )
-        );
+//                                //deposit freight
+//                        )
+//                ),
+//                new SequentialCommandGroup(//score carousel
+//                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, carousel, acceptableErrorXY, acceptableErrorH)
+//                        //turn carousel
+//                ),
+//                new SequentialCommandGroup(//park in warehouse
+//                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, barrier, acceptableErrorXY, acceptableErrorH)
+//                        //drive straight for 5 sec
+//                )
+//        );
 
-        autoCommand = new SequentialCommandGroup(
+        SequentialCommandGroup autoCommand = new SequentialCommandGroup(
+                new FindLevelCommand(logger, visionSubsystem, 3),
+                new WaitForSecondsCommand(logger, 1),
                 new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, hub, acceptableErrorXY, acceptableErrorH),
+                new WaitForSecondsCommand(logger,5),
                 new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, carousel, acceptableErrorXY, acceptableErrorH),
+                new WaitForSecondsCommand(logger,5),
                 new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, barrier, acceptableErrorXY, acceptableErrorH),
                 new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, inWarehouse, acceptableErrorXY, acceptableErrorH)
         );
 
-        addCommands(autoCommand);
+        addCommands(new SetElevatorPositionCommand(logger, hardwareMap, elevatorSubsystem, 1));
     }
 }
 

@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class SubsystemService {
     public static OdometrySubsystem createOdometrySubsystem(HardwareMap hardwareMap, String leftEncoderName, String rightEncoderName, String centerEncoderName, Vector initialPosition) {
-        double TRACK_WIDTH = 11.6715657;//13.7272565099261
+        double TRACK_WIDTH = 11.9;//13.7272565099261
         double WHEEL_DIAMETER = 1.366;
         double CENTER_WHEEL_OFFSET = -5;//-6.79087916353029
         double TICKS_PER_REV = 8192;//2048
