@@ -7,25 +7,20 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Commands.DriveToPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.FindLevelCommand;
-import org.firstinspires.ftc.teamcode.Commands.SetElevatorPositionCommand;
-import org.firstinspires.ftc.teamcode.Commands.SetElevatorPositionVisionCommand;
-import org.firstinspires.ftc.teamcode.Commands.SetMotorPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.WaitForSecondsCommand;
 import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
-import org.firstinspires.ftc.teamcode.Subsystems.DriveToPositionSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
-import org.firstinspires.ftc.teamcode.Utils.ServiceLocator;
+import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemService;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
 public class Auto extends SequentialCommandGroup {
-    ServiceLocator serviceLocator;
+    SubsystemLocator subsystemLocator;
 
     double t = 23.75;//1 tile in inches
     Vector origin, homeA, homeB, hub, carousel, barrier, startingLocation, inWarehouse;
@@ -59,14 +54,9 @@ public class Auto extends SequentialCommandGroup {
         ContinuousServoSubsystem elevatorSubsystem = new ContinuousServoSubsystem(logger, hardwareMap, "servo0", "limit0", "limit4");
         new LogPosition(odometrySubsystem, logger);
 
-        serviceLocator = new ServiceLocator(
-                driveSubsystem, odometrySubsystem, visionSubsystem, dashboard, logger, elevatorSubsystem
+        subsystemLocator = new SubsystemLocator(
+                driveSubsystem, odometrySubsystem, visionSubsystem, dashboard, logger, hardwareMap, elevatorSubsystem
         );
-
-
-
-
-
 
 //        SequentialCommandGroup autoCommand = new SequentialCommandGroup(
 //                new SequentialCommandGroup(//score freight
@@ -88,14 +78,14 @@ public class Auto extends SequentialCommandGroup {
 //        );
 
         SequentialCommandGroup autoCommand = new SequentialCommandGroup(
-                new FindLevelCommand(logger, visionSubsystem, 3),
-                new WaitForSecondsCommand(logger, 1),
-                new DriveToPositionCommand(serviceLocator, hub, acceptableErrorXY, acceptableErrorH),
-                new WaitForSecondsCommand(logger,5),
-                new DriveToPositionCommand(serviceLocator, carousel, acceptableErrorXY, acceptableErrorH),
-                new WaitForSecondsCommand(logger,5),
-                new DriveToPositionCommand(serviceLocator, barrier, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(serviceLocator, inWarehouse, acceptableErrorXY, acceptableErrorH)
+                new FindLevelCommand(subsystemLocator, 3),
+                new WaitForSecondsCommand(subsystemLocator, 1),
+                new DriveToPositionCommand(subsystemLocator, hub, acceptableErrorXY, acceptableErrorH),
+                new WaitForSecondsCommand(subsystemLocator,5),
+                new DriveToPositionCommand(subsystemLocator, carousel, acceptableErrorXY, acceptableErrorH),
+                new WaitForSecondsCommand(subsystemLocator,5),
+                new DriveToPositionCommand(subsystemLocator, barrier, acceptableErrorXY, acceptableErrorH),
+                new DriveToPositionCommand(subsystemLocator, inWarehouse, acceptableErrorXY, acceptableErrorH)
         );
 
         addCommands(autoCommand);

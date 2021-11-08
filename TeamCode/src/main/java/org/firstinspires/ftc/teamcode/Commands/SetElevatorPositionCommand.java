@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
+import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 
 import java.util.function.DoubleSupplier;
 
@@ -18,21 +19,23 @@ public class SetElevatorPositionCommand extends CommandBase {
 
     double minSpeed = 0.5, maxSpeed = 1;
 
-    public SetElevatorPositionCommand(Logger logger_, HardwareMap hardwareMap_, ContinuousServoSubsystem servo_, int level_) {
-        logger = logger_;
+    public SetElevatorPositionCommand(SubsystemLocator subsystemLocator, int level_) {
+        logger = subsystemLocator.getLogger();
         targetLevel = level_;
+        servo = subsystemLocator.getElevatorSubsystem();
+
+        HardwareMap hardwareMap = subsystemLocator.getHardwareMap();
         limitSwitches = new TouchSensor[]{
-                hardwareMap_.get(TouchSensor.class, "limit0"),
-                hardwareMap_.get(TouchSensor.class, "limit1"),
-                hardwareMap_.get(TouchSensor.class, "limit2"),
-                hardwareMap_.get(TouchSensor.class, "limit3"),
-                hardwareMap_.get(TouchSensor.class, "limit4"),
+                hardwareMap.get(TouchSensor.class, "limit0"),
+                hardwareMap.get(TouchSensor.class, "limit1"),
+                hardwareMap.get(TouchSensor.class, "limit2"),
+                hardwareMap.get(TouchSensor.class, "limit3"),
+                hardwareMap.get(TouchSensor.class, "limit4"),
         };
-        servo = servo_;
     }
 
-    public SetElevatorPositionCommand(Logger logger_, HardwareMap hardwareMap_, ContinuousServoSubsystem servo_, DoubleSupplier levelSupplier_) {
-        this(logger_, hardwareMap_, servo_, -1);
+    public SetElevatorPositionCommand(SubsystemLocator subsystemLocator, DoubleSupplier levelSupplier_) {
+        this(subsystemLocator, -1);
         levelSupplier = levelSupplier_;
     }
 

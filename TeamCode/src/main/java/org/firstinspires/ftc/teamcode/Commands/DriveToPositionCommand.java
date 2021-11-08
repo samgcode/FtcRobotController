@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Utils.Angle;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
-import org.firstinspires.ftc.teamcode.Utils.ServiceLocator;
+import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
 @Config
@@ -31,10 +31,10 @@ public class DriveToPositionCommand extends CommandBase {
     public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.2, 0, 0);
     public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.03, 1, 0.01);
 
-    public DriveToPositionCommand(ServiceLocator serviceLocator, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
-        logger = serviceLocator.getLogger();
-        driveSubsystem = serviceLocator.getDriveSubsystem();
-        odometrySubsystem = serviceLocator.getOdometrySubsystem();
+    public DriveToPositionCommand(SubsystemLocator subsystemLocator, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
+        logger = subsystemLocator.getLogger();
+        driveSubsystem = subsystemLocator.getDriveSubsystem();
+        odometrySubsystem = subsystemLocator.getOdometrySubsystem();
         targetPosition = position_;
         acceptableErrorXY = acceptableErrorXY_;
         acceptableErrorH = acceptableErrorH_;

@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.util.Timing;
 
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
+import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 
 public class FindLevelCommand extends CommandBase {
     Logger logger;
@@ -12,9 +13,9 @@ public class FindLevelCommand extends CommandBase {
     Timing.Timer timer;
     long time;
 
-    public FindLevelCommand(Logger logger_, VisionSubsystem visionSubsystem_, long time_) {
-        logger = logger_;
-        visionSubsystem = visionSubsystem_;
+    public FindLevelCommand(SubsystemLocator subsystemLocator, long time_) {
+        logger = subsystemLocator.getLogger();
+        visionSubsystem = subsystemLocator.getVisionSubsystem();
         time = time_;
     }
 

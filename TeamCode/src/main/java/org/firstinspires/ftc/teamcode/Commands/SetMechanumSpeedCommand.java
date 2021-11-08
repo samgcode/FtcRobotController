@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Utils.Angle;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
+import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
 @Config
@@ -31,11 +32,11 @@ public class SetMechanumSpeedCommand extends CommandBase {
     public static double fastSpeed = 1;
     public static double slowSpeed = 0.5;
 
-    public SetMechanumSpeedCommand(Logger logger_, MecanumDrive driveSubsystem_, OdometrySubsystem odometrySubsystem_, Gamepad gamepad_) {
-        driveSubsystem = driveSubsystem_;
-        odometrySubsystem = odometrySubsystem_;
-        gamepad = new GamepadEx(gamepad_);
-        logger = logger_;
+    public SetMechanumSpeedCommand(SubsystemLocator subsystemLocator) {
+        driveSubsystem = subsystemLocator.getDriveSubsystem();
+        odometrySubsystem = subsystemLocator.getOdometrySubsystem();
+        gamepad = new GamepadEx(subsystemLocator.getGamepad1());
+        logger = subsystemLocator.getLogger();
 
         hPID = new PIDController(0,0,0);
 
