@@ -28,7 +28,7 @@ public class DriveToPositionCommand extends CommandBase {
     PIDController hPID;
 
     public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.2, 0, 0);
-    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.2, 0, 0);
+    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.3, 0, 0);
     public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.03, 1, 0.01);
 
     public DriveToPositionCommand(SubsystemLocator subsystemLocator, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {

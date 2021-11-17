@@ -16,16 +16,13 @@ import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
 import org.firstinspires.ftc.teamcode.Utils.FeedForwardMotor;
 import org.firstinspires.ftc.teamcode.Utils.FeedForwardTuner;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
+import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemService;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
 @Autonomous
 public class PurePursuitTesting extends CommandOpMode {
-    MecanumDrive driveSubsystem;
-    OdometrySubsystem odometrySubsystem;
-    LogPosition logPosition;
-    Logger logger;
-    FeedForwardTuner feedForwardTuner;
+    SubsystemLocator subsystemLocator;
 
     double t = 23.75;//1 tile in inches
     Vector origin, homeA, homeB, hub, carousel, barrier, startingLocation;
@@ -44,15 +41,7 @@ public class PurePursuitTesting extends CommandOpMode {
         barrier = new Vector(2*t*m, 0.5*t, 0);
         startingLocation = new Vector(3*t*m, -0.5*t, -90*m);
 
-        logger = new Logger(FtcDashboard.getInstance());
-
-
-        driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,
-                "drive3", "drive1", "drive2", "drive0");
-        odometrySubsystem = SubsystemService.createOdometrySubsystem(hardwareMap,
-                "drive2", "drive3", "drive0", origin);
-
-        logPosition = new LogPosition(odometrySubsystem, logger);
+        subsystemLocator = new SubsystemLocator(origin, hardwareMap, gamepad1, gamepad2);
 
         Vector pointA = new Vector(20, 0, 90);
         Vector pointB = new Vector(10, 10, -90);
@@ -89,15 +78,15 @@ public class PurePursuitTesting extends CommandOpMode {
         Button y2 = new GamepadButton(gamepadEx2, GamepadKeys.Button.Y);
         Button x2 = new GamepadButton(gamepadEx2, GamepadKeys.Button.X);
 
-//        a.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 0), acceptableErrorXY, acceptableErrorH));
-//        b.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(10, 10, 0), acceptableErrorXY, acceptableErrorH));
-//        y.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(20, 0, 0), acceptableErrorXY, acceptableErrorH));
-//        x.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(10, -10, 0), acceptableErrorXY, acceptableErrorH));
-//
-//        a2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 0), acceptableErrorXY, acceptableErrorH));
-//        b2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 90), acceptableErrorXY, acceptableErrorH));
-//        y2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, 180), acceptableErrorXY, acceptableErrorH));
-//        x2.whenPressed(new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, new Vector(0, 0, -90), acceptableErrorXY, acceptableErrorH));
+        a.whenPressed(new DriveToPositionCommand(subsystemLocator, new Vector(0, 0, 0), acceptableErrorXY, acceptableErrorH));
+        b.whenPressed(new DriveToPositionCommand(subsystemLocator, new Vector(10, 10, 0), acceptableErrorXY, acceptableErrorH));
+        y.whenPressed(new DriveToPositionCommand(subsystemLocator, new Vector(20, 0, 0), acceptableErrorXY, acceptableErrorH));
+        x.whenPressed(new DriveToPositionCommand(subsystemLocator, new Vector(10, -10, 0), acceptableErrorXY, acceptableErrorH));
+
+        a2.whenPressed(new DriveToPositionCommand(subsystemLocator, new Vector(0, 0, 0), acceptableErrorXY, acceptableErrorH));
+        b2.whenPressed(new DriveToPositionCommand(subsystemLocator, new Vector(0, 0, 90), acceptableErrorXY, acceptableErrorH));
+        y2.whenPressed(new DriveToPositionCommand(subsystemLocator, new Vector(0, 0, 180), acceptableErrorXY, acceptableErrorH));
+        x2.whenPressed(new DriveToPositionCommand(subsystemLocator, new Vector(0, 0, -90), acceptableErrorXY, acceptableErrorH));
     }
 
 }

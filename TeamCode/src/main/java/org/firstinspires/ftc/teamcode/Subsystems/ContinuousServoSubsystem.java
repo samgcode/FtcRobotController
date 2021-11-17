@@ -11,6 +11,7 @@ public class ContinuousServoSubsystem extends SubsystemBase {
     Logger logger;
     SimpleServo servo;
     TouchSensor bottom, top;
+    public int state = 0;
 
     public ContinuousServoSubsystem(Logger logger_, HardwareMap hardwareMap_, String servoName_, String bottomLimit, String topLimit) {
         logger = logger_;
@@ -19,14 +20,14 @@ public class ContinuousServoSubsystem extends SubsystemBase {
         top = hardwareMap_.get(TouchSensor.class, topLimit);
     }
 
-    @Override
-    public void periodic() {
-        if(bottom.isPressed() || top.isPressed()) {
-            servo.setPosition(0.5);
-        }
-    }
 
     public void setSpeed(double speed) {
-        servo.setPosition(speed);
+        if(top.isPressed() && speed > 0.5) {
+            servo.setPosition(0.5);
+        } else if(bottom.isPressed() && speed < 0.5) {
+            servo.setPosition(0.5);
+        } else {
+            servo.setPosition(speed);
+        }
     }
 }

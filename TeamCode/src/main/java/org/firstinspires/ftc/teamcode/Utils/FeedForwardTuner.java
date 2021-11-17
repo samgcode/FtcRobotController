@@ -18,15 +18,18 @@ public class FeedForwardTuner extends SubsystemBase {
         backRight = backRight_;
         backLeft = backLeft_;
         logger = logger_;
-    }
 
-    @Override
-    public void periodic() {
         frontRight.setFeedforwardCoefficients(frs, frv);
         frontLeft.setFeedforwardCoefficients(fls, flv);
         backRight.setFeedforwardCoefficients(brs, brv);
         backLeft.setFeedforwardCoefficients(bls, blv);
-
-        logger.log("FR ks", frontRight.getFeedforwardCoefficients()[0]);
     }
+
+//    @Override
+//    public void periodic() {
+//        frontRight.setFeedforwardCoefficients(frs, frv);
+//        frontLeft.setFeedforwardCoefficients(fls, flv);
+//        backRight.setFeedforwardCoefficients(brs, brv);
+//        backLeft.setFeedforwardCoefficients(bls, blv);
+//    }
 }
