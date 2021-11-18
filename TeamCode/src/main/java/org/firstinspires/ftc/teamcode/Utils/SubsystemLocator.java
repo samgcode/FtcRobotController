@@ -1,17 +1,20 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import java.util.TreeMap;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.VoltagePrintOutSubsystem;
 
 public class SubsystemLocator {
 
@@ -48,7 +51,6 @@ public class SubsystemLocator {
         gamepad2 = gamepad2_;
 
         dashboard = FtcDashboard.getInstance();
-        logger = new Logger(dashboard);
 
         driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,
                 "drive3", "drive1", "drive2", "drive0");
@@ -65,7 +67,9 @@ public class SubsystemLocator {
         hardwareMap = hardwareMap_;
 
         dashboard = FtcDashboard.getInstance();
-        logger = new Logger(dashboard);
+        logger = new Logger();
+        logger.start();
+
 
         driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,
                 "drive3", "drive1", "drive2", "drive0");
