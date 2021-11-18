@@ -3,40 +3,45 @@ package org.firstinspires.ftc.teamcode.Utils;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.arcrobotics.ftclib.command.SubsystemBase;
-
-import java.util.TreeMap;
 
 @Config
-public class Logger extends SubsystemBase {
+public class Logger implements Runnable {
+    Thread thread;
     FtcDashboard dashboard;
-    TelemetryPacket packet;
-    TreeMap<String, Object> stack = new TreeMap<String, Object>();
+    TelemetryPacket logs;
 
-    public static double logTime = 2;
+    public static long logTime = 100;
 
-    public Logger(FtcDashboard dashboard_) {
-        dashboard = dashboard_;
-        packet = new TelemetryPacket();
+    public Logger() {
+        dashboard = FtcDashboard.getInstance();
+        logs = new TelemetryPacket();
     }
-
-    public void log(String label, Object data) {
-        stack.put(label, data);
-//        System.out.println(label + ": " + data);
-    }
-
-    void clear() {
-        packet = new TelemetryPacket();
-    }
-
-    int counter = 0;
 
     @Override
-    public void periodic() {
-        if(counter %logTime == 0) {
-            packet.putAll(stack);
-            dashboard.sendTelemetryPacket(packet);
+    public void run() {
+        while(!thread.isInterrupted()) {
+            try {
+                dashboard.sendTelemetryPacket(getLogs());
+                Thread.sleep(logTime);
+            } catch (InterruptedException e) {
+                System.err.println(e);
+            }
+
         }
-        counter++;
     }
+
+    public void start() {
+        thread = new Thread(this, "logger");
+        thread.start();
+    }
+
+    public synchronized void log(String lable, Object data) {
+        logs.put(lable, data);
+    }
+
+
+    private synchronized TelemetryPacket getLogs() {
+        return logs;
+    }
+
 }
