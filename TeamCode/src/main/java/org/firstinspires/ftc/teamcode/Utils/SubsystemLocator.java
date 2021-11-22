@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Utils;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.VoltagePrintOutSubsystem;
 public class SubsystemLocator {
 
     MecanumDrive driveSubsystem;
+    HolonomicOdometry holonomicOdometry;
     OdometrySubsystem odometrySubsystem;
     VisionSubsystem visionSubsystem;
     FtcDashboard dashboard;
@@ -25,41 +28,23 @@ public class SubsystemLocator {
 
     //hardware
     ContinuousServoSubsystem elevatorServo;
+    ContinuousServoSubsystem carouselServo;
     TouchSensor[] limitSwitches;
     Gamepad gamepad1, gamepad2;
+    MotorEx leftEncoder, rightEncoder, centerEncoder;
 
-    public SubsystemLocator(MecanumDrive driveSubsystem_, OdometrySubsystem odometrySubsystem_, VisionSubsystem visionSubsystem_, FtcDashboard dashboard_, Logger logger_, HardwareMap hardwareMap_, ContinuousServoSubsystem elevatorSubsystem_, Gamepad gamepad1_, Gamepad gamepad2_) {
-        driveSubsystem = driveSubsystem_;
-        odometrySubsystem = odometrySubsystem_;
-        visionSubsystem = visionSubsystem_;
-        dashboard = dashboard_;
-        logger = logger_;
-        hardwareMap = hardwareMap_;
-        elevatorServo = elevatorSubsystem_;
-        gamepad1 = gamepad1_;
-        gamepad2 = gamepad2_;
-    }
+    //constatnts
+    String fr = "drive3", fl = "drive1", br = "drive0", bl = "drive2";
+    double TRACK_WIDTH = 11.9;//13.7272565099261
+    double WHEEL_DIAMETER = 1.366;
+    double CENTER_WHEEL_OFFSET = -4.2;//-6.79087916353029
+    double TICKS_PER_REV = 8192;//2048
+    double TICKS_TO_INCHES = WHEEL_DIAMETER * Math.PI / TICKS_PER_REV;
 
-    public SubsystemLocator(HardwareMap hardwareMap_, ElevatorSubsystem elevatorSubsystem_, ContinuousServoSubsystem elevatorServo_, Gamepad gamepad1_, Gamepad gamepad2_) {
-        hardwareMap = hardwareMap_;
-        elevatorServo = elevatorServo_;
-        elevatorSubsystem = elevatorSubsystem_;
-        gamepad1 = gamepad1_;
-        gamepad2 = gamepad2_;
-
-        dashboard = FtcDashboard.getInstance();
-        logger = new Logger(dashboard);
-
-        driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,
-                "drive3", "drive1", "drive2", "drive0");
-        odometrySubsystem = SubsystemService.createOdometrySubsystem(hardwareMap,
-                "drive2", "drive3", "drive0", new Vector(0,0,0));
-
-        visionSubsystem = new VisionSubsystem(logger, hardwareMap);
-
-        new LogPosition(odometrySubsystem, logger);
-
-    }
+    //
+    double leftEncoderOffset = 0;
+    double rightEncoderOffset = 0;
+    double centerEncoderOffset = 0;
 
     public SubsystemLocator(Vector startingLocation, HardwareMap hardwareMap_) {
         hardwareMap = hardwareMap_;
@@ -67,10 +52,22 @@ public class SubsystemLocator {
         dashboard = FtcDashboard.getInstance();
         logger = new Logger(dashboard);
 
-        driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,
-                "drive3", "drive1", "drive2", "drive0");
-        odometrySubsystem = SubsystemService.createOdometrySubsystem(hardwareMap,
-                "drive2", "drive3", "drive0", startingLocation);
+        driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,fr, fl, bl, br);
+
+        leftEncoder = new MotorEx(hardwareMap, bl);
+        rightEncoder = new MotorEx(hardwareMap, fr);
+        centerEncoder = new MotorEx(hardwareMap, br);
+
+        holonomicOdometry = new HolonomicOdometry(
+                () -> leftEncoder.getCurrentPosition() * -TICKS_TO_INCHES - leftEncoderOffset,
+                () -> rightEncoder.getCurrentPosition() * TICKS_TO_INCHES - rightEncoderOffset,
+                () -> centerEncoder.getCurrentPosition() * -TICKS_TO_INCHES - centerEncoderOffset,
+                TRACK_WIDTH, CENTER_WHEEL_OFFSET
+        );
+
+        holonomicOdometry.updatePose(startingLocation.toPose2d());
+        odometrySubsystem = new OdometrySubsystem(holonomicOdometry);
+
         visionSubsystem = new VisionSubsystem(logger, hardwareMap);
         elevatorServo = new ContinuousServoSubsystem(logger, hardwareMap, "servo0", "limit0", "limit4");
 
@@ -83,7 +80,7 @@ public class SubsystemLocator {
         };
 
         elevatorSubsystem = new ElevatorSubsystem(logger, elevatorServo, limitSwitches);
-//        new LogPosition(odometrySubsystem, logger);
+        new LogPosition(odometrySubsystem, logger);
 
 //        new VoltagePrintOutSubsystem(logger, hardwareMap);
     }
@@ -106,11 +103,19 @@ public class SubsystemLocator {
 
     public HardwareMap getHardwareMap() { return hardwareMap; }
 
-    public ElevatorSubsystem getElevatorServo() { return elevatorSubsystem; }
+    public ContinuousServoSubsystem getElevatorServo() { return elevatorServo; }
 
     public ElevatorSubsystem getElevatorSubsystem() { return elevatorSubsystem; }
 
     public Gamepad getGamepad1() { return gamepad1; }
 
     public Gamepad getGamepad2() { return gamepad2; }
+
+    public HolonomicOdometry getHolonomicOdometry() { return holonomicOdometry; }
+
+    public void resetEncoderOffsets() {
+        leftEncoderOffset = leftEncoder.getCurrentPosition() * -TICKS_TO_INCHES;
+        rightEncoderOffset = rightEncoder.getCurrentPosition() * TICKS_TO_INCHES;
+        centerEncoderOffset = centerEncoder.getCurrentPosition() * -TICKS_TO_INCHES;
+    }
 }

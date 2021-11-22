@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.Range;
 
@@ -18,10 +19,12 @@ public class DriveToPositionCommand extends CommandBase {
     MecanumDrive driveSubsystem;
     OdometrySubsystem odometrySubsystem;
     Vector targetPosition;
+    Logger logger;
+    Timing.Timer timer;
+
     double acceptableErrorXY;
     double acceptableErrorH;
     boolean isFinished = false;
-    Logger logger;
 
     PIDController xPID;
     PIDController yPID;
@@ -29,7 +32,7 @@ public class DriveToPositionCommand extends CommandBase {
 
     public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.2, 0, 0);
     public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.3, 0, 0);
-    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.03, 1, 0.01);
+    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.04, 1, 0.01);
 
     public DriveToPositionCommand(SubsystemLocator subsystemLocator, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
         logger = subsystemLocator.getLogger();
@@ -48,7 +51,10 @@ public class DriveToPositionCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        logger.log("status", "driving to position: " + targetPosition.x + ", " + targetPosition.y + ", " + targetPosition.h);
         isFinished = false;
+        timer = new Timing.Timer(4);
+        timer.start();
     }
 
     @Override
@@ -92,7 +98,7 @@ public class DriveToPositionCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return isFinished;
+        return isFinished || timer.done();
     }
 
     @Override

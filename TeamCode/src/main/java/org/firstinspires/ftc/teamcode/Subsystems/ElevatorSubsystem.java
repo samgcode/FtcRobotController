@@ -23,11 +23,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        logger.log("target", targetLevel);
-        logger.log("level", currentLevel);
-
-        updateCurrentLevel();
-        updateServoSpeed();
+//        logger.log("target", targetLevel);
+//        logger.log("level", currentLevel);
+//
+//        updateCurrentLevel();
+//        updateServoSpeed();
     }
 
     void updateCurrentLevel() {
@@ -54,6 +54,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public boolean isAtTarget() {
-        return (targetLevel == currentLevel);
+        return true;
+//        return (targetLevel == currentLevel);
     }
 }

@@ -79,7 +79,7 @@ public class SetMechanumSpeedCommand extends CommandBase {
 
         logger.log("pid period", hPIDDrive.getPeriod());
 
-        Vector speed = new Vector(-gamepad.getLeftX()*speedModifier, gamepad.getLeftY()*speedModifier, hSpeed);
+        Vector speed = new Vector(gamepad.getLeftX()*speedModifier, -gamepad.getLeftY()*speedModifier, hSpeed);
 
        driveSubsystem.driveFieldCentric(speed.x, speed.y, speed.h, h, true);
         //driveSubsystem.driveRobotCentric(speed.x, speed.y, speed.h, true);
