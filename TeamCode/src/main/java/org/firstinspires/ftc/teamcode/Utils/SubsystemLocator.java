@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.VoltagePrintOutSubsystem;
 
 public class SubsystemLocator {
 
@@ -50,7 +49,9 @@ public class SubsystemLocator {
         hardwareMap = hardwareMap_;
 
         dashboard = FtcDashboard.getInstance();
-        logger = new Logger(dashboard);
+        logger = new Logger();
+        logger.start();
+
 
         driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,fr, fl, bl, br);
 

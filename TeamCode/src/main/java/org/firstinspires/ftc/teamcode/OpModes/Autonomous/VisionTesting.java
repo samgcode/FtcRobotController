@@ -16,7 +16,7 @@ public class VisionTesting extends CommandOpMode {
     @Override
     public void initialize() {
         dashboard = FtcDashboard.getInstance();
-        logger = new Logger(dashboard);
+        logger = new Logger();
         visionSubsystem = new VisionSubsystem(logger, hardwareMap);
     }
 }
