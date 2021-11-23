@@ -114,9 +114,9 @@ public class SubsystemLocator {
 
     public HolonomicOdometry getHolonomicOdometry() { return holonomicOdometry; }
 
-    public void resetEncoderOffsets() {
-        leftEncoderOffset = leftEncoder.getCurrentPosition() * -TICKS_TO_INCHES;
-        rightEncoderOffset = rightEncoder.getCurrentPosition() * TICKS_TO_INCHES;
-        centerEncoderOffset = centerEncoder.getCurrentPosition() * -TICKS_TO_INCHES;
+    public void resetEncoderOffsets(Vector pos) {
+        leftEncoderOffset = leftEncoder.getCurrentPosition() * -TICKS_TO_INCHES - pos.x;
+        rightEncoderOffset = rightEncoder.getCurrentPosition() * TICKS_TO_INCHES - pos.y;
+        centerEncoderOffset = centerEncoder.getCurrentPosition() * -TICKS_TO_INCHES - pos.h;
     }
 }

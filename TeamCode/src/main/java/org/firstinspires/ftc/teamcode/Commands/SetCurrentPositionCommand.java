@@ -32,15 +32,8 @@ public class SetCurrentPositionCommand extends CommandBase {
             position = new Vector(odometrySubsystem.getPose());
             position.h = heading;
         }
-        Vector oPos = new Vector(odometrySubsystem.getPose());
-        System.out.println(oPos.x + ", " + oPos.y + ", " + oPos.z);
-        System.out.println("updating pos");
-        holonomicOdometry.updatePose(position.toPose2d());
-        subsystemLocator.resetEncoderOffsets();
-        oPos = new Vector(odometrySubsystem.getPose());
-        System.out.println(oPos.x + ", " + oPos.y + ", " + oPos.z);
 
-
+        subsystemLocator.resetEncoderOffsets(position);
     }
 
     @Override

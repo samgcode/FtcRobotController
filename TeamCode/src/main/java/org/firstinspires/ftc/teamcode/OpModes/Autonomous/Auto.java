@@ -81,8 +81,8 @@ public class Auto extends SequentialCommandGroup {
         addCommands(autoCommand);
 //        addCommands(
 //                new SequentialCommandGroup(
-//                        new DriveToPositionCommand(subsystemLocator, new Vector(15, 15, 0), acceptableErrorXY, acceptableErrorH),
-//                        new SetCurrentPositionCommand(subsystemLocator, new Vector(0,0,0))
+//                        new SetCurrentPositionCommand(subsystemLocator, new Vector(10,10,0)),
+//                        new DriveToPositionCommand(subsystemLocator, new Vector(20, 20, 0), acceptableErrorXY, acceptableErrorH)
 //                )
 //        );
     }
