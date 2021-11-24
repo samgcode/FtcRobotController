@@ -35,5 +35,7 @@ public class LogPosition extends SubsystemBase {
             logger.log("h", h);
         }
         frameCount++;
+
+        odometrySubsystem.update();
     }
 }

@@ -25,6 +25,7 @@ public class DriveToPositionCommand extends CommandBase {
     double acceptableErrorXY;
     double acceptableErrorH;
     boolean isFinished = false;
+    long time = 10000;
 
     PIDController xPID;
     PIDController yPID;
@@ -32,7 +33,7 @@ public class DriveToPositionCommand extends CommandBase {
 
     public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.2, 0, 0);
     public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.3, 0, 0);
-    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.04, 1, 0.01);
+    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.05, 1, 0.005);
 
     public DriveToPositionCommand(SubsystemLocator subsystemLocator, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
         logger = subsystemLocator.getLogger();
@@ -49,11 +50,16 @@ public class DriveToPositionCommand extends CommandBase {
         hPID = new PIDController(0,0,0);
     }
 
+    public DriveToPositionCommand(SubsystemLocator subsystemLocator, Vector position, double acceptableErrorXY, double acceptableErrorH, long timeOutTime) {
+        this(subsystemLocator, position, acceptableErrorXY, acceptableErrorH);
+        time = timeOutTime;
+    }
+
     @Override
     public void initialize() {
         logger.log("status", "driving to position: " + targetPosition.x + ", " + targetPosition.y + ", " + targetPosition.h);
         isFinished = false;
-        timer = new Timing.Timer(4);
+        timer = new Timing.Timer(time);
         timer.start();
     }
 
@@ -98,7 +104,10 @@ public class DriveToPositionCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return isFinished || timer.done();
+        if(time < 1000) {
+            return isFinished || timer.done();
+        }
+        return isFinished;
     }
 
     @Override

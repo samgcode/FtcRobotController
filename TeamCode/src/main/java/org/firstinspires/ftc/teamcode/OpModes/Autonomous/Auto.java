@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Commands.DriveToPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.FindLevelCommand;
+import org.firstinspires.ftc.teamcode.Commands.RotateCarouselCommand;
 import org.firstinspires.ftc.teamcode.Commands.SetCurrentPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.WaitForSecondsCommand;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
@@ -27,14 +28,12 @@ public class Auto extends SequentialCommandGroup {
         }
 
         origin = new Vector(0, 0, 0);
-//        homeA = new Vector(3*t*m, -1.5*t, 0);
-//        homeB = new Vector(3*t*m, 0.5*t, 0);
         hub = new Vector(1*t, 1*t, 0);
-        carousel = new Vector(10, -1*(t+2), -90);
-        barrier = new Vector(1, 2*t, 0);
-        inWarehouse = new Vector(1, 3.5*t, 0);
+        carousel = new Vector(8.9, -1*(t+2), -90);
+        barrier = new Vector(0, 2*t, 0);
+        inWarehouse = new Vector(0, 3.5*t, 0);
         startingLocation = new Vector(0, 0, 0);
-        tempA = new Vector(1, 1*t, 0);
+        tempA = new Vector(0, 1*t, 0);
         tempB = new Vector(10, -0.5*t, 0);
         tempC = new Vector(-1, 0, 0);
 
@@ -61,28 +60,36 @@ public class Auto extends SequentialCommandGroup {
 
         SequentialCommandGroup autoCommand = new SequentialCommandGroup(
                 new SetCurrentPositionCommand(subsystemLocator, new Vector(0, 0, 0)),
-                new FindLevelCommand(subsystemLocator, 3),
-                new WaitForSecondsCommand(subsystemLocator, 1),
-                new DriveToPositionCommand(subsystemLocator, tempA, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(subsystemLocator, hub, acceptableErrorXY, acceptableErrorH),
+                new SequentialCommandGroup(
+                        new FindLevelCommand(subsystemLocator, 3),
+                        new WaitForSecondsCommand(subsystemLocator, 1)
+                ),
+                new SequentialCommandGroup(
+                        new DriveToPositionCommand(subsystemLocator, tempA, acceptableErrorXY, acceptableErrorH),
+                        new DriveToPositionCommand(subsystemLocator, hub, acceptableErrorXY, acceptableErrorH),
 //                new SetElevatorPositionCommand(subsystemLocator, true),
-                new WaitForSecondsCommand(subsystemLocator,1),
-                new DriveToPositionCommand(subsystemLocator, tempA, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(subsystemLocator, carousel, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(subsystemLocator, tempB, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(subsystemLocator, new Vector(-2, 0, 0), 2, acceptableErrorH),
-                new SetCurrentPositionCommand(subsystemLocator, startingLocation),
-                new WaitForSecondsCommand(subsystemLocator,3),
-                new DriveToPositionCommand(subsystemLocator, barrier, acceptableErrorXY, acceptableErrorH),
-                new DriveToPositionCommand(subsystemLocator, inWarehouse, acceptableErrorXY, acceptableErrorH),
-                new SetCurrentPositionCommand(subsystemLocator, startingLocation)
+                        new WaitForSecondsCommand(subsystemLocator,1)
+                ),
+                new SequentialCommandGroup(
+                        new DriveToPositionCommand(subsystemLocator, tempA, acceptableErrorXY, acceptableErrorH),
+                        new DriveToPositionCommand(subsystemLocator, carousel, acceptableErrorXY, acceptableErrorH),
+                        new RotateCarouselCommand(subsystemLocator),
+                        new DriveToPositionCommand(subsystemLocator, tempB, acceptableErrorXY, acceptableErrorH)
+                ),
+                new SequentialCommandGroup(
+                        new DriveToPositionCommand(subsystemLocator, new Vector(-2, 0, 0), 2, acceptableErrorH, 3),
+                        new SetCurrentPositionCommand(subsystemLocator, startingLocation),
+                        new WaitForSecondsCommand(subsystemLocator,3),
+                        new DriveToPositionCommand(subsystemLocator, barrier, acceptableErrorXY, acceptableErrorH),
+                        new DriveToPositionCommand(subsystemLocator, inWarehouse, acceptableErrorXY, acceptableErrorH)
+                ),
+                new WaitForSecondsCommand(subsystemLocator, 1)
         );
 
         addCommands(autoCommand);
 //        addCommands(
 //                new SequentialCommandGroup(
-//                        new SetCurrentPositionCommand(subsystemLocator, new Vector(10,10,0)),
-//                        new DriveToPositionCommand(subsystemLocator, new Vector(20, 20, 0), acceptableErrorXY, acceptableErrorH)
+//                        new RotateCarouselCommand(subsystemLocator)
 //                )
 //        );
     }

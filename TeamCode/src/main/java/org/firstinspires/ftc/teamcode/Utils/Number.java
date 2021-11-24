@@ -13,4 +13,8 @@ public class Number {
         }
         return new double[]{biggest, index};
     }
+
+    public static double map(double value, double min, double max, double min2, double max2) {
+        return (value-min)/(max-min) * (max2-min2) + min2;
+    }
 }

@@ -9,7 +9,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.CustomServo;
 import org.firstinspires.ftc.teamcode.Subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
@@ -27,14 +29,14 @@ public class SubsystemLocator {
 
     //hardware
     ContinuousServoSubsystem elevatorServo;
-    ContinuousServoSubsystem carouselServo;
+    CustomServo carouselServo;
     TouchSensor[] limitSwitches;
     Gamepad gamepad1, gamepad2;
     MotorEx leftEncoder, rightEncoder, centerEncoder;
 
     //constatnts
     String fr = "drive3", fl = "drive1", br = "drive0", bl = "drive2";
-    double TRACK_WIDTH = 11.9;//13.7272565099261
+    double TRACK_WIDTH = 11.8;//13.7272565099261
     double WHEEL_DIAMETER = 1.366;
     double CENTER_WHEEL_OFFSET = -4.2;//-6.79087916353029
     double TICKS_PER_REV = 8192;//2048
@@ -51,7 +53,6 @@ public class SubsystemLocator {
         dashboard = FtcDashboard.getInstance();
         logger = new Logger();
         logger.start();
-
 
         driveSubsystem = SubsystemService.createMechanumDriveSubsystem(logger, hardwareMap,fr, fl, bl, br);
 
@@ -71,6 +72,8 @@ public class SubsystemLocator {
 
         visionSubsystem = new VisionSubsystem(logger, hardwareMap);
         elevatorServo = new ContinuousServoSubsystem(logger, hardwareMap, "servo0", "limit0", "limit4");
+
+        carouselServo = new CustomServo(logger, hardwareMap, "servo1");
 
         limitSwitches = new TouchSensor[]{
                 hardwareMap.get(TouchSensor.class, "limit0"),
@@ -105,6 +108,8 @@ public class SubsystemLocator {
     public HardwareMap getHardwareMap() { return hardwareMap; }
 
     public ContinuousServoSubsystem getElevatorServo() { return elevatorServo; }
+
+    public CustomServo getCarouselServo() { return carouselServo; }
 
     public ElevatorSubsystem getElevatorSubsystem() { return elevatorSubsystem; }
 

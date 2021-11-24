@@ -34,6 +34,7 @@ public class SetCurrentPositionCommand extends CommandBase {
         }
 
         subsystemLocator.resetEncoderOffsets(position);
+        holonomicOdometry.updatePose(position.toPose2d());
     }
 
     @Override

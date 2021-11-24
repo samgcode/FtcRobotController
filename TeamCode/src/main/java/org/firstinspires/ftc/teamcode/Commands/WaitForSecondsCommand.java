@@ -18,6 +18,7 @@ public class WaitForSecondsCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        logger.log("status", "waiting for: " + time + " seconds");
         timer = new Timing.Timer(time);
         timer.start();
     }
