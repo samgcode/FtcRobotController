@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes.Autonomous;
 
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Commands.DriveToPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.FindLevelCommand;
 import org.firstinspires.ftc.teamcode.Commands.RotateCarouselCommand;
@@ -22,41 +20,20 @@ public class Auto extends SequentialCommandGroup {
     double acceptableErrorXY = 1;
     double acceptableErrorH = 1;
 
-    public Auto(boolean isRed, HardwareMap hardwareMap, Telemetry telemetry) {
+    public Auto(boolean isRed, SubsystemLocator subsystemLocator) {
         if(!isRed) {
             m = -1;
         }
 
         origin = new Vector(0, 0, 0);
         hub = new Vector(1*t, 1*t, 0);
-        carousel = new Vector(8.9, -1*(t+2), -90);
+        carousel = new Vector(8.9, -1*(t+1), -90);
         barrier = new Vector(0, 2*t, 0);
         inWarehouse = new Vector(0, 3.5*t, 0);
         startingLocation = new Vector(0, 0, 0);
         tempA = new Vector(0, 1*t, 0);
         tempB = new Vector(10, -0.5*t, 0);
         tempC = new Vector(-1, 0, 0);
-
-        subsystemLocator = new SubsystemLocator(startingLocation, hardwareMap);
-
-//        SequentialCommandGroup autoCommand = new SequentialCommandGroup(
-//                new SequentialCommandGroup(//score freight
-//                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, hub, acceptableErrorXY, acceptableErrorH),
-//                        new SequentialCommandGroup(//place on correct level
-//                                new SetElevatorPositionVisionCommand(visionSubsystem, elevatorSubsystem, 1),
-//                                new SetMotorPositionCommand(linearSubsystem, 10, 1)
-//                                //deposit freight
-//                        )
-//                ),
-//                new SequentialCommandGroup(//score carousel
-//                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, carousel, acceptableErrorXY, acceptableErrorH)
-//                        //turn carousel
-//                ),
-//                new SequentialCommandGroup(//park in warehouse
-//                        new DriveToPositionCommand(logger, driveSubsystem, odometrySubsystem, barrier, acceptableErrorXY, acceptableErrorH)
-//                        //drive straight for 5 sec
-//                )
-//        );
 
         SequentialCommandGroup autoCommand = new SequentialCommandGroup(
                 new SetCurrentPositionCommand(subsystemLocator, new Vector(0, 0, 0)),

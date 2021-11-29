@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
@@ -9,18 +8,17 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.CustomServo;
 import org.firstinspires.ftc.teamcode.Subsystems.ElevatorSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
+import org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 
 public class SubsystemLocator {
 
     MecanumDrive driveSubsystem;
     HolonomicOdometry holonomicOdometry;
-    OdometrySubsystem odometrySubsystem;
+    Odometry odometrySubsystem;
     VisionSubsystem visionSubsystem;
     FtcDashboard dashboard;
     Logger logger;
@@ -36,9 +34,9 @@ public class SubsystemLocator {
 
     //constatnts
     String fr = "drive3", fl = "drive1", br = "drive0", bl = "drive2";
-    double TRACK_WIDTH = 11.8;//13.7272565099261
+    double TRACK_WIDTH = 11.7;//13.7272565099261
     double WHEEL_DIAMETER = 1.366;
-    double CENTER_WHEEL_OFFSET = -4.2;//-6.79087916353029
+    double CENTER_WHEEL_OFFSET = -4.24;//-6.79087916353029
     double TICKS_PER_REV = 8192;//2048
     double TICKS_TO_INCHES = WHEEL_DIAMETER * Math.PI / TICKS_PER_REV;
 
@@ -68,7 +66,8 @@ public class SubsystemLocator {
         );
 
         holonomicOdometry.updatePose(startingLocation.toPose2d());
-        odometrySubsystem = new OdometrySubsystem(holonomicOdometry);
+        odometrySubsystem = new Odometry(holonomicOdometry, logger);
+        odometrySubsystem.start();
 
         visionSubsystem = new VisionSubsystem(logger, hardwareMap);
         elevatorServo = new ContinuousServoSubsystem(logger, hardwareMap, "servo0", "limit0", "limit4");
@@ -84,7 +83,6 @@ public class SubsystemLocator {
         };
 
         elevatorSubsystem = new ElevatorSubsystem(logger, elevatorServo, limitSwitches);
-        new LogPosition(odometrySubsystem, logger);
 
 //        new VoltagePrintOutSubsystem(logger, hardwareMap);
     }
@@ -97,7 +95,7 @@ public class SubsystemLocator {
 
     public MecanumDrive getDriveSubsystem() { return driveSubsystem; }
 
-    public OdometrySubsystem getOdometrySubsystem() { return odometrySubsystem; }
+    public Odometry getOdometrySubsystem() { return odometrySubsystem; }
 
     public VisionSubsystem getVisionSubsystem() { return visionSubsystem;}
 
@@ -123,5 +121,10 @@ public class SubsystemLocator {
         leftEncoderOffset = leftEncoder.getCurrentPosition() * -TICKS_TO_INCHES - pos.x;
         rightEncoderOffset = rightEncoder.getCurrentPosition() * TICKS_TO_INCHES - pos.y;
         centerEncoderOffset = centerEncoder.getCurrentPosition() * -TICKS_TO_INCHES - pos.h;
+    }
+
+    public void stop() {
+        logger.stop();
+        odometrySubsystem.stop();
     }
 }

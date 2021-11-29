@@ -2,13 +2,13 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 import org.firstinspires.ftc.teamcode.Utils.Angle;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Utils.Vector;
 @Config
 public class DriveToPositionCommand extends CommandBase {
     MecanumDrive driveSubsystem;
-    OdometrySubsystem odometrySubsystem;
+    Odometry odometrySubsystem;
     Vector targetPosition;
     Logger logger;
     Timing.Timer timer;
@@ -33,7 +33,7 @@ public class DriveToPositionCommand extends CommandBase {
 
     public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.2, 0, 0);
     public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.3, 0, 0);
-    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.05, 1, 0.005);
+    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.05, 0, 0.08);
 
     public DriveToPositionCommand(SubsystemLocator subsystemLocator, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
         logger = subsystemLocator.getLogger();
@@ -42,8 +42,6 @@ public class DriveToPositionCommand extends CommandBase {
         targetPosition = position_;
         acceptableErrorXY = acceptableErrorXY_;
         acceptableErrorH = acceptableErrorH_;
-
-        addRequirements(odometrySubsystem);
 
         xPID = new PIDController(0,0,0);
         yPID = new PIDController(0,0,0);

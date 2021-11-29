@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 
@@ -9,15 +8,15 @@ import org.firstinspires.ftc.teamcode.Utils.Logger;
 import java.util.Locale;
 
 public class LogPosition extends SubsystemBase {
-    OdometrySubsystem odometrySubsystem;
+    Odometry odometrySubsystem;
     int frameCount = 0;
     Logger logger;
 
-    public LogPosition(OdometrySubsystem odometrySubsystem_) {
+    public LogPosition(Odometry odometrySubsystem_) {
         odometrySubsystem = odometrySubsystem_;
 //        logger = logger_;
     }
-    public LogPosition(OdometrySubsystem odometrySubsystem_, Logger logger_) {
+    public LogPosition(Odometry odometrySubsystem_, Logger logger_) {
         odometrySubsystem = odometrySubsystem_;
         logger = logger_;
     }
@@ -35,7 +34,5 @@ public class LogPosition extends SubsystemBase {
             logger.log("h", h);
         }
         frameCount++;
-
-        odometrySubsystem.update();
     }
 }

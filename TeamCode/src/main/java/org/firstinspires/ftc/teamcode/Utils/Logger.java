@@ -22,8 +22,9 @@ public class Logger implements Runnable {
         while(!thread.isInterrupted()) {
             try {
                 dashboard.sendTelemetryPacket(getLogs());
-                Thread.sleep(logTime);
-            } catch (InterruptedException e) {
+//                Thread.sleep(logTime);
+//                System.out.println("test");
+            } catch (Exception e) {
                 System.err.println(e);
             }
 
@@ -39,9 +40,12 @@ public class Logger implements Runnable {
         logs.put(lable, data);
     }
 
-
     private synchronized TelemetryPacket getLogs() {
         return logs;
+    }
+
+    public void stop() {
+        thread.interrupt();
     }
 
 }

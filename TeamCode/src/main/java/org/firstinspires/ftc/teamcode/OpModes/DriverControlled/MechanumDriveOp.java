@@ -1,25 +1,15 @@
 package org.firstinspires.ftc.teamcode.OpModes.DriverControlled;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Commands.SetElevatorPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.SetMechanumSpeedCommand;
-import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.ElevatorSubsystem;
-import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
-import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
-import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
-import org.firstinspires.ftc.teamcode.Utils.SubsystemService;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
 @TeleOp(name="Mechaunum drive", group="drive")
@@ -28,24 +18,6 @@ public class MechanumDriveOp extends CommandOpMode {
 
     @Override
     public void initialize() {
-//        FtcDashboard dashboard = FtcDashboard.getInstance();
-//        Logger logger = new Logger(dashboard);
-//
-//        TouchSensor[] limitSwitches = new TouchSensor[]{
-//                hardwareMap.get(TouchSensor.class, "limit0"),
-//                hardwareMap.get(TouchSensor.class, "limit1"),
-//                hardwareMap.get(TouchSensor.class, "limit2"),
-//                hardwareMap.get(TouchSensor.class, "limit3"),
-//                hardwareMap.get(TouchSensor.class, "limit4"),
-//        };
-//
-//        ContinuousServoSubsystem elevatorServo = new ContinuousServoSubsystem(logger, hardwareMap, "servo0", "limit0", "limit4");
-//
-//        ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem(logger, elevatorServo, limitSwitches);
-//
-//        subsystemLocator = new SubsystemLocator(
-//                hardwareMap, elevatorSubsystem, elevatorServo, gamepad1, gamepad2
-//        );
 
         subsystemLocator = new SubsystemLocator(new Vector(0,0,0), hardwareMap, gamepad1, gamepad2);
 
@@ -72,6 +44,20 @@ public class MechanumDriveOp extends CommandOpMode {
         b2.whenPressed(new SetElevatorPositionCommand(subsystemLocator, 1));
         y2.whenPressed(new SetElevatorPositionCommand(subsystemLocator, 3));
 
+    }
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        initialize();
+
+        waitForStart();
+
+        // run the scheduler
+        while (!isStopRequested() && opModeIsActive()) {
+            run();
+        }
+        subsystemLocator.stop();
+        reset();
     }
 
 }

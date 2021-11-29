@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -10,6 +9,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 import org.firstinspires.ftc.teamcode.Utils.Angle;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.Utils.Vector;
 @Config
 public class SetMechanumSpeedCommand extends CommandBase {
     MecanumDrive driveSubsystem;
-    OdometrySubsystem odometrySubsystem;
+    Odometry odometrySubsystem;
     GamepadEx gamepad;
     PIDController hPIDDrive;
     Logger logger;
@@ -37,8 +37,6 @@ public class SetMechanumSpeedCommand extends CommandBase {
         logger = subsystemLocator.getLogger();
 
         hPIDDrive = new PIDController(0,0,0);
-
-        addRequirements(odometrySubsystem);
     }
 
     boolean prevState = false;
@@ -56,7 +54,7 @@ public class SetMechanumSpeedCommand extends CommandBase {
         hPIDDrive.setSetPoint(targetAngle);
 
         double hSpeed = hPIDDrive.calculate(measuredAngle);
-        Range.clip(hSpeed, -hSpeedModifier, hSpeedModifier);
+        hSpeed = Range.clip(hSpeed, -hSpeedModifier, hSpeedModifier);
 
         boolean state = gamepad.isDown(GamepadKeys.Button.A);
         if(prevState != state) {

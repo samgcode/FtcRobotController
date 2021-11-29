@@ -25,7 +25,7 @@ public class XDrive extends CommandOpMode {
         odometrySubsystem = new CustomOdometrySubsystem(hardwareMap);
 //        ftcLibOdometry = SubsystemService.createOdometrySubsystem(hardwareMap,
 //                "motor2", "motor3", "motor0", new Vector(0, 0, 0));
-        new LogPosition(ftcLibOdometry);
+//        new LogPosition(ftcLibOdometry);
 
         setSpeedCommand = new SetDriveSpeedCommand(driveSubsystem, gamepad1, odometrySubsystem);
 
