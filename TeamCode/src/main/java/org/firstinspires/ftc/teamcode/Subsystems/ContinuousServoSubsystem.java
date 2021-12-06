@@ -22,9 +22,9 @@ public class ContinuousServoSubsystem extends SubsystemBase {
 
 
     public void setSpeed(double speed) {
-        if(top.isPressed() && speed > 0.5) {
+        if(!top.isPressed() && speed > 0.5) {
             servo.setPosition(0.5);
-        } else if(bottom.isPressed() && speed < 0.5) {
+        } else if(!bottom.isPressed() && speed < 0.5) {
             servo.setPosition(0.5);
         } else {
             servo.setPosition(speed);

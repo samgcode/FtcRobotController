@@ -31,9 +31,9 @@ public class DriveToPositionCommand extends CommandBase {
     PIDController yPID;
     PIDController hPID;
 
-    public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.2, 0, 0);
-    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.3, 0, 0);
-    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.05, 0, 0.08);
+    public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.12, 0.1, 0.004);
+    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.11, 0.1, 0.003);
+    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.0015, 0.25, 0.00018);
 
     public DriveToPositionCommand(SubsystemLocator subsystemLocator, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
         logger = subsystemLocator.getLogger();
@@ -93,10 +93,11 @@ public class DriveToPositionCommand extends CommandBase {
         );
 
         if(xPID.atSetPoint() && yPID.atSetPoint() && hPID.atSetPoint()) {
+//        if(hPID.atSetPoint()) {
             isFinished = true;
             speed = new Vector(0,0,0);
         }
-
+//        speed = new Vector(0, 0, speed.h);
         driveSubsystem.driveFieldCentric(-speed.y, speed.x, speed.h, currentPose.h);
     }
 

@@ -46,6 +46,6 @@ public class SetElevatorPositionCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return elevatorSubsystem.isAtTarget();
+        return elevatorSubsystem.isAtTargetLevel();
     }
 }

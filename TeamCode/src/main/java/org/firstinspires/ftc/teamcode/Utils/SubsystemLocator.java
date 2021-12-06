@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Utils;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.hardware.ServoEx;
+import com.arcrobotics.ftclib.hardware.SimpleServo;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -28,6 +30,7 @@ public class SubsystemLocator {
     //hardware
     ContinuousServoSubsystem elevatorServo;
     CustomServo carouselServo;
+    ServoEx bucketServo;
     TouchSensor[] limitSwitches;
     Gamepad gamepad1, gamepad2;
     MotorEx leftEncoder, rightEncoder, centerEncoder;
@@ -36,7 +39,8 @@ public class SubsystemLocator {
     String fr = "drive3", fl = "drive1", br = "drive0", bl = "drive2";
     double TRACK_WIDTH = 11.7;//13.7272565099261
     double WHEEL_DIAMETER = 1.366;
-    double CENTER_WHEEL_OFFSET = -4.24;//-6.79087916353029
+    double CENTER_WHEEL_OFFSET = -4.28;//
+    // -6.79087916353029
     double TICKS_PER_REV = 8192;//2048
     double TICKS_TO_INCHES = WHEEL_DIAMETER * Math.PI / TICKS_PER_REV;
 
@@ -70,19 +74,22 @@ public class SubsystemLocator {
         odometrySubsystem.start();
 
         visionSubsystem = new VisionSubsystem(logger, hardwareMap);
-        elevatorServo = new ContinuousServoSubsystem(logger, hardwareMap, "servo0", "limit0", "limit4");
+        elevatorServo = new ContinuousServoSubsystem(logger, hardwareMap, "servo0", "limit1", "limit3");
 
         carouselServo = new CustomServo(logger, hardwareMap, "servo1");
+        bucketServo = new SimpleServo(hardwareMap, "servo2", 0, 180);
+        bucketServo.setInverted(false);
 
         limitSwitches = new TouchSensor[]{
-                hardwareMap.get(TouchSensor.class, "limit0"),
                 hardwareMap.get(TouchSensor.class, "limit1"),
+                hardwareMap.get(TouchSensor.class, "limit0"),
                 hardwareMap.get(TouchSensor.class, "limit2"),
                 hardwareMap.get(TouchSensor.class, "limit3"),
-                hardwareMap.get(TouchSensor.class, "limit4"),
         };
 
-        elevatorSubsystem = new ElevatorSubsystem(logger, elevatorServo, limitSwitches);
+
+
+        elevatorSubsystem = new ElevatorSubsystem(logger, elevatorServo, bucketServo, limitSwitches);
 
 //        new VoltagePrintOutSubsystem(logger, hardwareMap);
     }

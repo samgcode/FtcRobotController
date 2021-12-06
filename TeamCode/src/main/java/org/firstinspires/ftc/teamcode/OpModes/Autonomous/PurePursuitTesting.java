@@ -1,23 +1,14 @@
 package org.firstinspires.ftc.teamcode.OpModes.Autonomous;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.OdometrySubsystem;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Commands.DriveToPositionCommand;
-import org.firstinspires.ftc.teamcode.Subsystems.LogPosition;
-import org.firstinspires.ftc.teamcode.Utils.FeedForwardMotor;
-import org.firstinspires.ftc.teamcode.Utils.FeedForwardTuner;
-import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
-import org.firstinspires.ftc.teamcode.Utils.SubsystemService;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
 @Autonomous

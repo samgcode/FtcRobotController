@@ -18,13 +18,13 @@ public class RotateCarouselCommand extends CommandBase {
     public static double speed = 0.2;
 
     public RotateCarouselCommand(SubsystemLocator subsystemLocator) {
-        isFinished = false;
         logger = subsystemLocator.getLogger();
         servo = subsystemLocator.getCarouselServo();
     }
 
     @Override
     public void initialize() {
+        isFinished = false;
         timer = new Timer(3);
         timer.start();
     }

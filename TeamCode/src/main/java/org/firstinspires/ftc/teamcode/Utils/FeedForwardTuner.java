@@ -6,8 +6,8 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 @Config
 public class FeedForwardTuner extends SubsystemBase {
 
-    public static double frs = 0.035, fls = 0.035, brs = -0.01, bls = -0.01;
-    public static double frv = 1, flv = 1, brv = 0.8, blv = 0.8;
+    public static double frs = 0.15, fls = 0.1, brs = 0.1, bls = 0.11;
+    public static double frv = 1, flv = 1, brv = 0.6, blv = 0.6;
 
     FeedForwardMotor frontRight, frontLeft, backLeft, backRight;
     Logger logger;

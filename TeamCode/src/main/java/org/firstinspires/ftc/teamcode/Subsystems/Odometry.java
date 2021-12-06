@@ -15,7 +15,7 @@ public class Odometry implements Runnable {
     Logger logger;
     int frameCount;
 
-    public static int logTime = 50;
+    public static int logTime = 100;
 
     public Odometry(HolonomicOdometry odometry_, Logger logger_) {
         odometry = odometry_;
@@ -46,6 +46,7 @@ public class Odometry implements Runnable {
 
     public synchronized void updatePose() {
         odometry.updatePose();
+        System.out.println("update");
     }
 
     public synchronized void updatePose(Pose2d pose) {
@@ -53,6 +54,7 @@ public class Odometry implements Runnable {
     }
 
     public synchronized Pose2d getPose() {
+        System.out.println("get");
         return odometry.getPose();
     }
 
