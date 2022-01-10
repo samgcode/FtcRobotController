@@ -13,20 +13,13 @@ import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
 public class Auto extends SequentialCommandGroup {
-    SubsystemLocator subsystemLocator;
-
     double t = 23.75;//1 tile in inches
     Vector origin, tempA, tempB, tempBR, tempC, tempD, hub, carousel, barrier, startingLocation, inWarehouse, parking;
-    int m = 1;
 
     double acceptableErrorXY = 1;
     double acceptableErrorH = 2;
 
     public Auto(boolean isRed, SubsystemLocator subsystemLocator) {
-        if(!isRed) {
-            m = -1;
-        }
-
         origin = new Vector(0, 0, 0);
         hub = new Vector(1*t-1, 1*t+2, 0);
         carousel = new Vector(9, -1*(t+1), -90);
@@ -88,20 +81,6 @@ public class Auto extends SequentialCommandGroup {
         );
 
         addCommands(autoCommand);
-//        addCommands(
-//                new SequentialCommandGroup(
-//                        new SetIntakeSpeedCommand(subsystemLocator, -1),
-//                        new WaitForSecondsCommand(subsystemLocator, 1),
-//                        new SetIntakeSpeedCommand(subsystemLocator, 0),
-//                        new WaitForSecondsCommand(subsystemLocator, 5),
-//
-//                        new SetIntakeSpeedCommand(subsystemLocator, 1),
-//                        new WaitForSecondsCommand(subsystemLocator, 1),
-//                        new SetIntakeSpeedCommand(subsystemLocator, -1),
-//                        new WaitForSecondsCommand(subsystemLocator, 5),
-//                        new SetIntakeSpeedCommand(subsystemLocator, 0)
-//                )
-//        );
     }
 }
 
@@ -110,7 +89,6 @@ auto
 >>score preloaded freight
 
 >>>>find correct level
->>>>>>point toward barcode?
 >>>>>>find shipping element position
 
 >>>>put freight on correct level (vision subsystem)
@@ -126,5 +104,5 @@ auto
 
 >>park in warehouse
 >>>>move to barrier
->>>>drive straight for 5 sec
+>>>>park
 */

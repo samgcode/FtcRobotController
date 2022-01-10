@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.teamcode.Subsystems.ContinuousServoSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.CustomServo;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveElevatorSubsystem;
@@ -43,11 +42,10 @@ public class SubsystemLocator {
 
     //constatnts
     String fr = "drive3", fl = "drive1", br = "drive0", bl = "drive2";
-    double TRACK_WIDTH = 11.7;//13.7272565099261
+    double TRACK_WIDTH = 11.7;
     double WHEEL_DIAMETER = 1.365;
-    double CENTER_WHEEL_OFFSET = -4.3;//
-    // -6.79087916353029
-    double TICKS_PER_REV = 8192;//2048
+    double CENTER_WHEEL_OFFSET = -4.3;
+    double TICKS_PER_REV = 8192;
     double TICKS_TO_INCHES = WHEEL_DIAMETER * Math.PI / TICKS_PER_REV;
 
     //
@@ -94,12 +92,8 @@ public class SubsystemLocator {
                 hardwareMap.get(TouchSensor.class, "limit3"),
         };
 
-
         intakeSubsystem = new IntakeSubsystem(logger, intakeServo);
         elevatorSubsystem = new ElevatorSubsystem(logger, elevatorServo, bucketServo, limitSwitches);
-
-
-//        new VoltagePrintOutSubsystem(logger, hardwareMap);
     }
 
     public SubsystemLocator(Vector startingLocation, HardwareMap hardwareMap_, Gamepad gamepad1_, Gamepad gamepad2_) {

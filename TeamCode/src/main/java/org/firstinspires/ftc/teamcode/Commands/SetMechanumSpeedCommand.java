@@ -80,6 +80,5 @@ public class SetMechanumSpeedCommand extends CommandBase {
         Vector speed = new Vector(-gamepad.getLeftX()*speedModifier, gamepad.getLeftY()*speedModifier, hSpeed);
 
        driveSubsystem.driveFieldCentric(speed.x, speed.y, speed.h, h, true);
-        //driveSubsystem.driveRobotCentric(speed.x, speed.y, speed.h, true);
     }
 }

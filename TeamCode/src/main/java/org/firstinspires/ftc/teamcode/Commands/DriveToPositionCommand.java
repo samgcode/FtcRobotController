@@ -93,7 +93,6 @@ public class DriveToPositionCommand extends CommandBase {
         );
 
         if(xPID.atSetPoint() && yPID.atSetPoint() && hPID.atSetPoint()) {
-//        if(hPID.atSetPoint()) {
             isFinished = true;
             speed = new Vector(0,0,0);
         }

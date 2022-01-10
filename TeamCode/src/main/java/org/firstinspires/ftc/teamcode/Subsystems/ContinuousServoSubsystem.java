@@ -11,7 +11,6 @@ public class ContinuousServoSubsystem extends SubsystemBase {
     Logger logger;
     SimpleServo servo;
     TouchSensor bottom, top;
-    public int state = 0;
 
     public ContinuousServoSubsystem(Logger logger_, HardwareMap hardwareMap_, String servoName_, String bottomLimit, String topLimit) {
         logger = logger_;

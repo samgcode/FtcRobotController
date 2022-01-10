@@ -57,19 +57,16 @@ public class MechanumDriveOp extends CommandOpMode {
         TriggerReader rt2r = new TriggerReader(gamepadEx2, GamepadKeys.Trigger.RIGHT_TRIGGER);
         Trigger rt2 = new Trigger(() -> rt2r.stateJustChanged());
 
+        //button events
         a2.whenPressed(new SetElevatorPositionCommand(subsystemLocator, 0));
         b2.whenPressed(new SetElevatorPositionCommand(subsystemLocator, 1));
         y2.whenPressed(new SetElevatorPositionCommand(subsystemLocator, 2));
-//        x2.whenPressed(new SetElevatorPositionCommand(subsystemLocator, 3));
 
         lb2.whenPressed(new RotateBucketCommand(subsystemLocator, 170));
         rb2.whenPressed(new RotateBucketCommand(subsystemLocator, 90));
 
         ls2.whenPressed(new RotateCarouselCommand(subsystemLocator));
 
-//        lt2.whenActive(new SetIntakeSpeedCommand(subsystemLocator, 1));
-//        rt2.whenActive(new SetIntakeSpeedCommand(subsystemLocator, -1));
-//        lt2.and(rt2).whenInactive(new SetIntakeSpeedCommand(subsystemLocator, 0));
         schedule(new SetIntakeSpeedCommand(subsystemLocator, true));
     }
 

@@ -17,7 +17,6 @@ public class SetIntakeSpeedCommand extends CommandBase {
     IntakeSubsystem intakeSubsystem;
     double speed;
     boolean useTriggers;
-    TriggerReader forward, reverse;
     Gamepad gamepad;
 
     public SetIntakeSpeedCommand(SubsystemLocator subsystemLocator, double speed_) {

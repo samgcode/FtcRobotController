@@ -1,16 +1,12 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
-@Config
 public class Logger implements Runnable {
     Thread thread;
     FtcDashboard dashboard;
     TelemetryPacket logs;
-
-    public static long logTime = 100;
 
     public Logger() {
         dashboard = FtcDashboard.getInstance();
@@ -22,8 +18,6 @@ public class Logger implements Runnable {
         while(!thread.isInterrupted()) {
             try {
                 dashboard.sendTelemetryPacket(getLogs());
-//                Thread.sleep(logTime);
-//                System.out.println("test");
             } catch (Exception e) {
                 System.err.println(e);
             }

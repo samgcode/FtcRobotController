@@ -57,7 +57,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     void updateCurrentLevel() {
-//        logger.log("states", !limitSwitches[0].isPressed() + ", " + !limitSwitches[1].isPressed() + ", " + !limitSwitches[2].isPressed() + ", " + !limitSwitches[3].isPressed());
         for(int limitIndex = 0; limitIndex < limitSwitches.length; limitIndex++) {
             TouchSensor limitSwitch = limitSwitches[limitIndex];
             boolean isPressed = !limitSwitch.isPressed();

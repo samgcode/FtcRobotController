@@ -53,7 +53,6 @@ public class Odometry implements Runnable {
     }
 
     public synchronized Pose2d getPose() {
-        System.out.println("get");
         return odometry.getPose();
     }
 
