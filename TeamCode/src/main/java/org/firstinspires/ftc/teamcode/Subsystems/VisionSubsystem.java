@@ -17,7 +17,6 @@ public class VisionSubsystem extends SubsystemBase {
     OpenCvCamera camera;
     BarcodePipeline barcodePipeline;
     Logger logger;
-    Timing.Timer timer;
     public int level;
     public boolean stable = false;
 
@@ -48,14 +47,10 @@ public class VisionSubsystem extends SubsystemBase {
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
         dashboard.startCameraStream(camera, 0);
-
-        timer = new Timing.Timer(2);
-        timer.start();
-
     }
 
-    public void updateVision() {
-        if(!timer.done()) {
+    public void updateVision(boolean update) {
+        if(!update) {
             Vector left = barcodePipeline.left;
             Vector middle = barcodePipeline.middle;
             Vector right = barcodePipeline.right;

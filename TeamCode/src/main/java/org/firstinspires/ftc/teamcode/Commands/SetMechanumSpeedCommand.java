@@ -26,7 +26,7 @@ public class SetMechanumSpeedCommand extends CommandBase {
     boolean updateTargetAngle;
     double speedModifier = 1.0;
 
-    public static PIDCoefficients hPidCoefficientsDrive = new PIDCoefficients(0.04,1,0.015);
+    public static PIDCoefficients hPidCoefficientsDrive = new PIDCoefficients(0.001, 0.2, 0.00018);
     public static double fastSpeed = 1;
     public static double slowSpeed = 0.5;
 
@@ -77,7 +77,7 @@ public class SetMechanumSpeedCommand extends CommandBase {
 
         logger.log("pid period", hPIDDrive.getPeriod());
 
-        Vector speed = new Vector(gamepad.getLeftX()*speedModifier, -gamepad.getLeftY()*speedModifier, hSpeed);
+        Vector speed = new Vector(-gamepad.getLeftX()*speedModifier, gamepad.getLeftY()*speedModifier, hSpeed);
 
        driveSubsystem.driveFieldCentric(speed.x, speed.y, speed.h, h, true);
         //driveSubsystem.driveRobotCentric(speed.x, speed.y, speed.h, true);

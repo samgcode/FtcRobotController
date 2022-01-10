@@ -27,9 +27,7 @@ public class FindLevelCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(!timer.done()) {
-            visionSubsystem.updateVision();
-        }
+        visionSubsystem.updateVision(timer.done());
     }
 
     @Override

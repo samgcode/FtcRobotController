@@ -6,7 +6,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 @Config
 public class FeedForwardTuner extends SubsystemBase {
 
-    public static double frs = 0.15, fls = 0.1, brs = 0.1, bls = 0.11;
+    public static double frs = 0.08, fls = 0.07, brs = 0.07, bls = 0.08;
     public static double frv = 1, flv = 1, brv = 0.6, blv = 0.6;
 
     FeedForwardMotor frontRight, frontLeft, backLeft, backRight;
@@ -25,11 +25,11 @@ public class FeedForwardTuner extends SubsystemBase {
         backLeft.setFeedforwardCoefficients(bls, blv);
     }
 
-//    @Override
-//    public void periodic() {
-//        frontRight.setFeedforwardCoefficients(frs, frv);
-//        frontLeft.setFeedforwardCoefficients(fls, flv);
-//        backRight.setFeedforwardCoefficients(brs, brv);
-//        backLeft.setFeedforwardCoefficients(bls, blv);
-//    }
+    @Override
+    public void periodic() {
+        frontRight.setFeedforwardCoefficients(frs, frv);
+        frontLeft.setFeedforwardCoefficients(fls, flv);
+        backRight.setFeedforwardCoefficients(brs, brv);
+        backLeft.setFeedforwardCoefficients(bls, blv);
+    }
 }

@@ -19,14 +19,13 @@ public class SetElevatorPositionCommand extends CommandBase {
 
     int targetLevel;
     boolean useVision;
-    double minSpeed = 0.5, maxSpeed = 1;
 
     public SetElevatorPositionCommand(SubsystemLocator subsystemLocator, int level_) {
         logger = subsystemLocator.getLogger();
         elevatorSubsystem = subsystemLocator.getElevatorSubsystem();
 
         targetLevel = level_;
-
+        addRequirements(elevatorSubsystem);
     }
 
     public SetElevatorPositionCommand(SubsystemLocator subsystemLocator, boolean useVision_) {
@@ -38,10 +37,14 @@ public class SetElevatorPositionCommand extends CommandBase {
     @Override
     public void initialize() {
         if(targetLevel == -1) {
-            targetLevel = visionSubsystem.level+1;
+            targetLevel = visionSubsystem.level;
+            if(visionSubsystem.level == -1) {
+                targetLevel = 2;
+            }
         }
 
         elevatorSubsystem.targetLevel = targetLevel;
+        elevatorSubsystem.manualControl = false;
     }
 
     @Override

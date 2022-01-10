@@ -17,6 +17,7 @@ public class RotateBucketCommand extends CommandBase {
         logger = subsystemLocator.getLogger();
         elevatorSubsystem = subsystemLocator.getElevatorSubsystem();
         angle = angle_;
+        addRequirements(elevatorSubsystem);
     }
 
     @Override

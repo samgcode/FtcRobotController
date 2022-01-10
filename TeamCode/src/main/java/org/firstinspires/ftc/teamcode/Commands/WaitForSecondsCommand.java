@@ -14,6 +14,10 @@ public class WaitForSecondsCommand extends CommandBase {
     public WaitForSecondsCommand(SubsystemLocator subsystemLocator, double time_) {
         logger = subsystemLocator.getLogger();
         time = (long)time_;
+        addRequirements(
+                subsystemLocator.getElevatorSubsystem(),
+                subsystemLocator.getVisionSubsystem()
+        );
     }
 
     @Override

@@ -31,9 +31,9 @@ public class DriveToPositionCommand extends CommandBase {
     PIDController yPID;
     PIDController hPID;
 
-    public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.12, 0.1, 0.004);
-    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.11, 0.1, 0.003);
-    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.0015, 0.25, 0.00018);
+    public static PIDCoefficients xPidCoefficients = new PIDCoefficients(0.2, 0.2, 0.004);
+    public static PIDCoefficients yPidCoefficients = new PIDCoefficients(0.2, 0.2, 0.003);
+    public static PIDCoefficients hPidCoefficients = new PIDCoefficients(0.008, 0.2, 0.00018);
 
     public DriveToPositionCommand(SubsystemLocator subsystemLocator, Vector position_, double acceptableErrorXY_, double acceptableErrorH_) {
         logger = subsystemLocator.getLogger();
@@ -63,7 +63,7 @@ public class DriveToPositionCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double speedModifier = 0.5;
+        double speedModifier = 0.6;
 
         Vector currentPose = new Vector(odometrySubsystem.getPose());
         double measuredAngle = Angle.getMAngle(currentPose.h, targetPosition.h);

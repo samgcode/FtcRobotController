@@ -5,9 +5,9 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.DriveToPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.FindLevelCommand;
 import org.firstinspires.ftc.teamcode.Commands.RotateBucketCommand;
-import org.firstinspires.ftc.teamcode.Commands.RotateCarouselCommand;
 import org.firstinspires.ftc.teamcode.Commands.SetCurrentPositionCommand;
 import org.firstinspires.ftc.teamcode.Commands.SetElevatorPositionCommand;
+import org.firstinspires.ftc.teamcode.Commands.SetIntakeSpeedCommand;
 import org.firstinspires.ftc.teamcode.Commands.WaitForSecondsCommand;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
@@ -16,11 +16,11 @@ public class Auto extends SequentialCommandGroup {
     SubsystemLocator subsystemLocator;
 
     double t = 23.75;//1 tile in inches
-    Vector origin, tempA, tempB, tempBR, tempC, hub, carousel, barrier, startingLocation, inWarehouse;
+    Vector origin, tempA, tempB, tempBR, tempC, tempD, hub, carousel, barrier, startingLocation, inWarehouse, parking;
     int m = 1;
 
-    double acceptableErrorXY = 0.5;
-    double acceptableErrorH = 1;
+    double acceptableErrorXY = 1;
+    double acceptableErrorH = 2;
 
     public Auto(boolean isRed, SubsystemLocator subsystemLocator) {
         if(!isRed) {
@@ -28,7 +28,7 @@ public class Auto extends SequentialCommandGroup {
         }
 
         origin = new Vector(0, 0, 0);
-        hub = new Vector(1*t, 1*t, 0);
+        hub = new Vector(1*t-1, 1*t+2, 0);
         carousel = new Vector(9, -1*(t+1), -90);
         barrier = new Vector(0, 2*t, 0);
         inWarehouse = new Vector(0, 3.5*t, 0);
@@ -37,21 +37,29 @@ public class Auto extends SequentialCommandGroup {
         tempB = new Vector(10, -0.5*t, 0);
         tempBR = new Vector(10, -0.5*t, -90);
         tempC = new Vector(-1, 0, 0);
+        parking = new Vector(1*t+4, -1*(t), 0);
+        tempD = new Vector(10, 0, 0);
 
         SequentialCommandGroup autoCommand = new SequentialCommandGroup(
-                new SetCurrentPositionCommand(subsystemLocator, new Vector(0, 0, 0)),
+                new SequentialCommandGroup(
+                        new SetElevatorPositionCommand(subsystemLocator, 0),
+                        new SetIntakeSpeedCommand(subsystemLocator, -1),
+                        new WaitForSecondsCommand(subsystemLocator, 1),
+                        new SetIntakeSpeedCommand(subsystemLocator, 0),
+                        new RotateBucketCommand(subsystemLocator, 90),
+                        new SetCurrentPositionCommand(subsystemLocator, new Vector(0, 0, 0))
+                ),
                 new SequentialCommandGroup( //find level
-                        new FindLevelCommand(subsystemLocator, 3)
+                        new FindLevelCommand(subsystemLocator, 1)
                 ),
                 new SequentialCommandGroup( //place on hub
-                        new WaitForSecondsCommand(subsystemLocator, 1),
                         new DriveToPositionCommand(subsystemLocator, tempA, acceptableErrorXY, acceptableErrorH),
-                        new WaitForSecondsCommand(subsystemLocator, 1),
                         new DriveToPositionCommand(subsystemLocator, hub, acceptableErrorXY, acceptableErrorH),
                         new SetElevatorPositionCommand(subsystemLocator, true),
-                        new WaitForSecondsCommand(subsystemLocator, 1),
-                        new DriveToPositionCommand(subsystemLocator, tempA, acceptableErrorXY, acceptableErrorH)
-                )
+                        new RotateBucketCommand(subsystemLocator, 180),
+                        new RotateBucketCommand(subsystemLocator, 90)
+//                        new DriveToPositionCommand(subsystemLocator, tempA, acceptableErrorXY, acceptableErrorH)
+                ),
 //                new SequentialCommandGroup( //carousel
 //                        new WaitForSecondsCommand(subsystemLocator,1),
 //                        new DriveToPositionCommand(subsystemLocator, tempB, acceptableErrorXY, acceptableErrorH),
@@ -65,23 +73,35 @@ public class Auto extends SequentialCommandGroup {
 //                        new DriveToPositionCommand(subsystemLocator, new Vector(-2, 0, 0), 2, acceptableErrorH, 4),
 //                        new SetCurrentPositionCommand(subsystemLocator, startingLocation)
 //                ),
+                new SequentialCommandGroup( //park in parking
+                        new DriveToPositionCommand(subsystemLocator, tempD, acceptableErrorXY, acceptableErrorH),
+                        new SetElevatorPositionCommand(subsystemLocator, 0),
+                        new DriveToPositionCommand(subsystemLocator, parking, acceptableErrorXY, acceptableErrorH)
+                ),
 //                new SequentialCommandGroup( //park in warehouse
 //                        new WaitForSecondsCommand(subsystemLocator,3),
 //                        new DriveToPositionCommand(subsystemLocator, barrier, acceptableErrorXY, acceptableErrorH),
 //                        new DriveToPositionCommand(subsystemLocator, inWarehouse, acceptableErrorXY, acceptableErrorH)
 //                ),
-//                new WaitForSecondsCommand(subsystemLocator, 1)
+//                new WaitForSecondsCommand(subsystemLocator, 1),
+            new SetElevatorPositionCommand(subsystemLocator, 0)
         );
 
-//        addCommands(autoCommand);
-        addCommands(
-                new SequentialCommandGroup(
-                        new SetElevatorPositionCommand(subsystemLocator, 1),
-                        new RotateBucketCommand(subsystemLocator, 90),
-                        new RotateBucketCommand(subsystemLocator, 180),
-                        new RotateBucketCommand(subsystemLocator, 90)
-                )
-        );
+        addCommands(autoCommand);
+//        addCommands(
+//                new SequentialCommandGroup(
+//                        new SetIntakeSpeedCommand(subsystemLocator, -1),
+//                        new WaitForSecondsCommand(subsystemLocator, 1),
+//                        new SetIntakeSpeedCommand(subsystemLocator, 0),
+//                        new WaitForSecondsCommand(subsystemLocator, 5),
+//
+//                        new SetIntakeSpeedCommand(subsystemLocator, 1),
+//                        new WaitForSecondsCommand(subsystemLocator, 1),
+//                        new SetIntakeSpeedCommand(subsystemLocator, -1),
+//                        new WaitForSecondsCommand(subsystemLocator, 5),
+//                        new SetIntakeSpeedCommand(subsystemLocator, 0)
+//                )
+//        );
     }
 }
 

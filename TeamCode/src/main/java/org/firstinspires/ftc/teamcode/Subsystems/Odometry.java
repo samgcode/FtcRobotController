@@ -46,7 +46,6 @@ public class Odometry implements Runnable {
 
     public synchronized void updatePose() {
         odometry.updatePose();
-        System.out.println("update");
     }
 
     public synchronized void updatePose(Pose2d pose) {
