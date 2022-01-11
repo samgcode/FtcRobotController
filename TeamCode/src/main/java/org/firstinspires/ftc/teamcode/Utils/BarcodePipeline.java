@@ -9,6 +9,11 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+
+/*
+barcode pipeline
+vision pipeline for freight frenzy object detection
+ */
 @Config
 public class BarcodePipeline extends OpenCvPipeline {
 

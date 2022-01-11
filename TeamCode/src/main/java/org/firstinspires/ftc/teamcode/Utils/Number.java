@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
+/*
+number util functions
+ */
 public class Number {
     public static double[] largest(double[] numbers) {
         double biggest = Double.NEGATIVE_INFINITY;

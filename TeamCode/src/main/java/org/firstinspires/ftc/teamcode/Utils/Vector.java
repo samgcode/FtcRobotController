@@ -3,6 +3,10 @@ package org.firstinspires.ftc.teamcode.Utils;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 
+/*
+a utility class which represents 2 or 3 numbers used for a position or a speed etc.
+ */
+
 public class Vector {
     public double x, y, z, h;
 

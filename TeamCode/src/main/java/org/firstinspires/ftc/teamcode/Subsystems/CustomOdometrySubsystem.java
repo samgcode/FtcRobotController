@@ -10,6 +10,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
+/*
+a custom implementation of the FTC Lib odometry
+mostly deprecated, use FTC Lib OdometrySubsystem instead
+ */
 public class CustomOdometrySubsystem extends SubsystemBase {
     MotorEx encoderLeft, encoderRight, encoderPerp;
     RevIMU imu;

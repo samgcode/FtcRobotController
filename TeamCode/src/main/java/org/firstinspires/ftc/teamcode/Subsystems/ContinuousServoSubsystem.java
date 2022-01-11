@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 
+/*
+subsystem that controlls an individual servo motor in continuos mode
+ */
 public class ContinuousServoSubsystem extends SubsystemBase {
     Logger logger;
     SimpleServo servo;

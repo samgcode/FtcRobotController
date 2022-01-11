@@ -18,18 +18,25 @@ import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.Odometry;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 
+/*
+Subsystem locator
+essentialy a registry of all of the subsystems and hardware components
+ */
+
 public class SubsystemLocator {
 
+    //create variables for each subsystem
     MecanumDrive driveSubsystem;
     HolonomicOdometry holonomicOdometry;
-    Odometry odometrySubsystem;
     VisionSubsystem visionSubsystem;
     FtcDashboard dashboard;
-    Logger logger;
     HardwareMap hardwareMap;
     ElevatorSubsystem elevatorSubsystem;
     DriveElevatorSubsystem driveElevatorSubsystem;
     IntakeSubsystem intakeSubsystem;
+
+    Odometry odometrySubsystem;//runs in a seperate thread to allow it to run as fast as possible and increase accuracy
+    Logger logger; //runs in a seperate thread to free up processing
 
     //hardware
     ContinuousServoSubsystem elevatorServo;
@@ -40,7 +47,7 @@ public class SubsystemLocator {
     Gamepad gamepad1, gamepad2;
     MotorEx leftEncoder, rightEncoder, centerEncoder;
 
-    //constatnts
+    //constants
     String fr = "drive3", fl = "drive1", br = "drive0", bl = "drive2";
     double TRACK_WIDTH = 11.7;
     double WHEEL_DIAMETER = 1.365;
@@ -54,6 +61,7 @@ public class SubsystemLocator {
     double centerEncoderOffset = 0;
 
     public SubsystemLocator(Vector startingLocation, HardwareMap hardwareMap_) {
+        //create all of the subsystems
         hardwareMap = hardwareMap_;
 
         dashboard = FtcDashboard.getInstance();
@@ -103,6 +111,7 @@ public class SubsystemLocator {
         driveElevatorSubsystem = new DriveElevatorSubsystem(logger, gamepad2, elevatorSubsystem);
     }
 
+    //getters for all of the subsystems amd hardware
     public MecanumDrive getDriveSubsystem() { return driveSubsystem; }
 
     public Odometry getOdometrySubsystem() { return odometrySubsystem; }
@@ -129,12 +138,14 @@ public class SubsystemLocator {
 
     public IntakeSubsystem getIntakeSubsystem() { return intakeSubsystem; }
 
+    //resets the encoder offsets to account for drift etc.
     public void resetEncoderOffsets(Vector pos) {
         leftEncoderOffset = leftEncoder.getCurrentPosition() * -TICKS_TO_INCHES - pos.x;
         rightEncoderOffset = rightEncoder.getCurrentPosition() * TICKS_TO_INCHES - pos.y;
         centerEncoderOffset = centerEncoder.getCurrentPosition() * -TICKS_TO_INCHES - pos.h;
     }
 
+    //stop all subsystems that run in seperate threads
     public void stop() {
         logger.stop();
         odometrySubsystem.stop();

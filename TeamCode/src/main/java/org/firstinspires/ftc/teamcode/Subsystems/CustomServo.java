@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.Number;
 
+/*
+subsystem that controls a single servo in servo mode
+ */
 public class CustomServo extends SubsystemBase {
     Logger logger;
     SimpleServo servo;

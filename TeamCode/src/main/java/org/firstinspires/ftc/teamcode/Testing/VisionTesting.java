@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 
+/*
+opmode for testing vision code
+ */
 @Autonomous
 public class VisionTesting extends CommandOpMode {
     VisionSubsystem visionSubsystem;

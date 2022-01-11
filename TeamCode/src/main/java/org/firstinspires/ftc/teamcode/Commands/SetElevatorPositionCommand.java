@@ -7,6 +7,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.VisionSubsystem;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 
+/*
+set the target position of the elevator
+ */
 public class SetElevatorPositionCommand extends CommandBase {
     Logger logger;
     VisionSubsystem visionSubsystem;

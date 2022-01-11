@@ -8,6 +8,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 
+/*
+subsystem to control the elevator based on gamepad inputs
+ */
 public class DriveElevatorSubsystem extends SubsystemBase {
     Logger logger;
     ButtonReader upButton, downButton;

@@ -9,6 +9,9 @@ import org.firstinspires.ftc.teamcode.Commands.DriveToPositionCommand;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
+/*
+opmode for testing motion related features
+ */
 @Config
 @Autonomous
 public class MotionTesting extends CommandOpMode {

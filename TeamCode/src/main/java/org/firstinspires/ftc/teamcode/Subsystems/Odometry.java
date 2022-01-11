@@ -8,6 +8,11 @@ import org.firstinspires.ftc.teamcode.Utils.Logger;
 
 import java.util.Locale;
 
+/*
+keeps track of the robots position
+runs in a seperate cpu thread so it can run as fast as possible and be more accurate
+should be mostly reusable
+ */
 @Config
 public class Odometry implements Runnable {
     Thread thread;

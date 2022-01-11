@@ -7,6 +7,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.ElevatorSubsystem;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 
+/*
+robot specific command to handle rotating the bucket
+ */
 public class RotateBucketCommand extends CommandBase {
     Logger logger;
     ElevatorSubsystem elevatorSubsystem;

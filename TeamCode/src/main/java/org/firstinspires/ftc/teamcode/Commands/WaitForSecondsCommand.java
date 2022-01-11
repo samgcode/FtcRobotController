@@ -5,7 +5,9 @@ import com.arcrobotics.ftclib.util.Timing;
 
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
-
+/*
+useful reusable command to wait for a set amount of seconds
+ */
 public class WaitForSecondsCommand extends CommandBase {
     Timing.Timer timer;
     Logger logger;

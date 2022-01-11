@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Utils;
 
+/*
+angle utility functions
+ */
 public class Angle {
     public static double getMAngle(double mAngle, double targetAngle) {
         double difference = targetAngle-mAngle;

@@ -8,6 +8,9 @@ import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
+/*
+command that resets the current measured position of the robot to account for encoder inaccuracies
+ */
 public class SetCurrentPositionCommand extends CommandBase {
     HolonomicOdometry holonomicOdometry;
     Odometry odometrySubsystem;

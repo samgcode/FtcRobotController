@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Utils;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
+/*
+utility class to log data to the FTC Lib dashboard
+ */
 public class Logger implements Runnable {
     Thread thread;
     FtcDashboard dashboard;

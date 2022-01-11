@@ -8,6 +8,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.CustomServo;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 
+/*
+freight frenzy specific command to handle rotating the carousel
+ */
 @Config
 public class RotateCarouselCommand extends CommandBase {
     Logger logger;

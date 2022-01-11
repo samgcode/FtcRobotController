@@ -14,6 +14,10 @@ import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
+/*
+command that handles driving to a position on the field
+shouldn't require much change other than the PID coefficients
+ */
 @Config
 public class DriveToPositionCommand extends CommandBase {
     MecanumDrive driveSubsystem;

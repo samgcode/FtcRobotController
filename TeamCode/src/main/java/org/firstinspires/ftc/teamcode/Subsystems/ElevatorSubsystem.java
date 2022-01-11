@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 
+/*
+subsystem that drives the elevator to the correct level
+ */
 public class ElevatorSubsystem extends SubsystemBase {
     ContinuousServoSubsystem servo;
     ServoEx bucketServo;

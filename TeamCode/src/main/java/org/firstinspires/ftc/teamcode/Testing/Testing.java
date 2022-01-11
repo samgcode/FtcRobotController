@@ -9,6 +9,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+/*
+opmode for testing motors during mechanical development
+ */
 @TeleOp(name="Testing", group="Testing")
 @Disabled
 public class Testing extends OpMode {

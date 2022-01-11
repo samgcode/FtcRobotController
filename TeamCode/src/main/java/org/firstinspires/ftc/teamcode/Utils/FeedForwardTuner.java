@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Utils;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
+/*
+easily tune feed forward of motors during runtime
+ */
 @Config
 public class FeedForwardTuner extends SubsystemBase {
 

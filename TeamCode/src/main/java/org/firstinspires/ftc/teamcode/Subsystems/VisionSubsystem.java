@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.util.Timing;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
@@ -13,6 +12,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.firstinspires.ftc.teamcode.Utils.BarcodePipeline;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
+/*
+subsystem that feeds the camera into the vision pipeline and uses the data to figure out where an object is
+ */
 public class VisionSubsystem extends SubsystemBase {
     OpenCvCamera camera;
     BarcodePipeline barcodePipeline;

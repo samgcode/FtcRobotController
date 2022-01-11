@@ -4,6 +4,9 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 
+/*
+subsystem to control the intake
+ */
 public class IntakeSubsystem extends SubsystemBase {
     Logger logger;
     CustomServo motor;

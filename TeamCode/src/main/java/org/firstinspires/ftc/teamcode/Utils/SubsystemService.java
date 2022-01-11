@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Utils;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+/*
+util functions for creating subsystems
+ */
 public class SubsystemService {
 
     public static MecanumDrive createMechanumDriveSubsystem(Logger logger, HardwareMap hardwareMap, String frontRightName, String frontLeftName, String backLeftName,String backRightName) {
@@ -14,10 +17,6 @@ public class SubsystemService {
 
         new FeedForwardTuner(logger, frontRight, frontLeft, backRight, backLeft);
 
-        return new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
-    }
-
-    public static MecanumDrive createMechanumDriveSubsystem(FeedForwardMotor frontRight, FeedForwardMotor frontLeft, FeedForwardMotor backRight, FeedForwardMotor backLeft) {
         return new MecanumDrive(frontLeft, frontRight, backLeft, backRight);
     }
 }

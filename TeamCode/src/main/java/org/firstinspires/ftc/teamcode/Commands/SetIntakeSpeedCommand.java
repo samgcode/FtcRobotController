@@ -1,17 +1,15 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
-import org.opencv.core.Mat;
 
-import java.util.function.DoubleSupplier;
-
+/*
+update the speed of the intake
+ */
 public class SetIntakeSpeedCommand extends CommandBase {
     Logger logger;
     IntakeSubsystem intakeSubsystem;

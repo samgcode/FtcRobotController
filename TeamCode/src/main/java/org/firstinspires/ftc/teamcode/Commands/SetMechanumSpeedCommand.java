@@ -15,6 +15,10 @@ import org.firstinspires.ftc.teamcode.Utils.Logger;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
+/*
+command that updates the drive speed of the robot based on controller inputs
+pid is for the heading to attempt to keep the robot from turning while translating sideways
+ */
 @Config
 public class SetMechanumSpeedCommand extends CommandBase {
     MecanumDrive driveSubsystem;
