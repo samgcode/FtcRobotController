@@ -20,7 +20,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public boolean manualControl;
     double speed = 0.5;
 
-    double minSpeed = 0.5, maxSpeed = 1;
+    double minSpeed = 0.5, maxSpeed = 0.9;
 
     public ElevatorSubsystem(Logger logger_, ContinuousServoSubsystem servo_, ServoEx bucket_,TouchSensor[] limitSwitches_) {
         servo = servo_;
@@ -73,7 +73,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         if(currentLevel < targetLevel) {
             servo.setSpeed(maxSpeed);
         } else if(currentLevel > targetLevel) {
-            servo.setSpeed(-maxSpeed);
+            servo.setSpeed(1-maxSpeed);
         } else {
             servo.setSpeed(minSpeed);
         }
@@ -89,5 +89,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void setSpeed(double speed_) {
         speed = speed_;
+    }
+
+    public void reverseSpeed() {
+        maxSpeed = -maxSpeed;
     }
 }

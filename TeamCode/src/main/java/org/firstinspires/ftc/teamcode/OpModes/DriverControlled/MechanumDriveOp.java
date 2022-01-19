@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Commands.ReverseElevatorCommand;
 import org.firstinspires.ftc.teamcode.Commands.RotateBucketCommand;
 import org.firstinspires.ftc.teamcode.Commands.RotateCarouselCommand;
 import org.firstinspires.ftc.teamcode.Commands.SetElevatorPositionCommand;
@@ -66,6 +67,7 @@ public class MechanumDriveOp extends CommandOpMode {
         rb2.whenPressed(new RotateBucketCommand(subsystemLocator, 90));
 
         ls2.whenPressed(new RotateCarouselCommand(subsystemLocator));
+        rs2.whenPressed(new ReverseElevatorCommand(subsystemLocator));
 
         schedule(new SetIntakeSpeedCommand(subsystemLocator, true));
     }

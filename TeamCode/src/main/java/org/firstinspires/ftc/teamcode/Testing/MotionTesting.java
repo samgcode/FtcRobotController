@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Commands.DriveToPositionCommand;
 import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Utils.Vector;
 /*
 opmode for testing motion related features
  */
+@Disabled
 @Config
 @Autonomous
 public class MotionTesting extends CommandOpMode {

@@ -13,11 +13,11 @@ import org.firstinspires.ftc.teamcode.Utils.SubsystemLocator;
 import org.firstinspires.ftc.teamcode.Utils.Vector;
 
 public class Auto extends SequentialCommandGroup {
-    double t = 23.75;//1 tile in inches
+    double t = 23.75;//width of a tile in inches
     Vector origin, tempA, tempB, tempBR, tempC, tempD, hub, carousel, barrier, startingLocation, inWarehouse, parking;
 
-    double acceptableErrorXY = 1;
-    double acceptableErrorH = 2;
+    double acceptableErrorXY = 0.75;
+    double acceptableErrorH = 3;
 
     public Auto(boolean isRed, SubsystemLocator subsystemLocator) {
         origin = new Vector(0, 0, 0);
@@ -43,7 +43,7 @@ public class Auto extends SequentialCommandGroup {
                         new SetCurrentPositionCommand(subsystemLocator, new Vector(0, 0, 0))
                 ),
                 new SequentialCommandGroup( //find level
-                        new FindLevelCommand(subsystemLocator, 1)
+                        new FindLevelCommand(subsystemLocator, 3)
                 ),
                 new SequentialCommandGroup( //place on hub
                         new DriveToPositionCommand(subsystemLocator, tempA, acceptableErrorXY, acceptableErrorH),
@@ -90,7 +90,6 @@ auto
 
 >>>>find correct level
 >>>>>>find shipping element position
-
 >>>>put freight on correct level (vision subsystem)
 >>>>>>move to hub
 >>>>>>place freight on level X

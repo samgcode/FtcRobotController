@@ -57,7 +57,7 @@ public class VisionSubsystem extends SubsystemBase {
             Vector middle = barcodePipeline.middle;
             Vector right = barcodePipeline.right;
 
-            level = getMostGreen(new Vector[]{left, middle, right}, 20, 50);
+            level = getMostGreen(new Vector[]{left, middle, right}, 40, 70);
 
             logHS(0, left);
             logHS(1, middle);

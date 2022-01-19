@@ -18,7 +18,7 @@ public class RotateCarouselCommand extends CommandBase {
     Timer timer;
 
     boolean isFinished;
-    public static double speed = 0.2;
+    public static double speed = 0.85;
 
     public RotateCarouselCommand(SubsystemLocator subsystemLocator) {
         logger = subsystemLocator.getLogger();
@@ -28,7 +28,7 @@ public class RotateCarouselCommand extends CommandBase {
     @Override
     public void initialize() {
         isFinished = false;
-        timer = new Timer(3);
+        timer = new Timer(2);
         timer.start();
     }
 
